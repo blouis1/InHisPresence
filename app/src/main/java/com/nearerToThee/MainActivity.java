@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Locale;
 
@@ -92,6 +93,20 @@ public class MainActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private Fragment mCurrentFragment;
+
+        public Fragment getCurrentFragment() {
+            return mCurrentFragment;
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if (getCurrentFragment() != object) {
+                mCurrentFragment = ((Fragment) object);
+            }
+            super.setPrimaryItem(container, position, object);
+        }
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -99,13 +114,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a DevotionFragment (defined as a static inner class below).
             switch(position) {
                 case 0:
                     return DevotionFragment.newInstance(position + 1);
                 case 1:
                     return TopicsFragment.newInstance();
-                case 3:
+                case 2:
                     return SearchFragment.newInstance();
                 default:
                     return DevotionFragment.newInstance(position + 1);
@@ -127,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return "Topics".toUpperCase(locale);
                 case 2:
-                    return "Authors".toUpperCase(locale);
+                    return "Search".toUpperCase(locale);
             }
             return null;
         }
