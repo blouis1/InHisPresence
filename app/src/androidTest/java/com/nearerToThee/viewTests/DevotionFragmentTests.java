@@ -1,9 +1,11 @@
 package com.nearerToThee.viewTests;
 
+import android.app.Instrumentation;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.nearerToThee.R;
 import com.nearerToThee.view.DevotionFragment;
 import com.nearerToThee.view.MainActivity;
+import com.nearerToThee.view.TodaysReadingActivity;
 
 /**
  * Tests for the Devotion Fragment class.
@@ -43,9 +46,6 @@ public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<Main
         mRootView = devotionFragment.getView().getRootView();
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
         mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
-
-        mTabLayout = (TabLayout) m_activity.findViewById(R.id.tabs);
-
     }
 
     public void testFragmentIsNotNull() {
@@ -58,6 +58,18 @@ public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<Main
 
     public void testImageButtonIsEnabled() {
         assertTrue(mRead.isEnabled());
+    }
+
+    public void testClickingImageButtonOpensTodaysReadingActivity() {
+        // register next activity that need to be monitored.
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
+                .addMonitor(TodaysReadingActivity.class.getName(), null, false);
+        // Tap five letter button
+        TouchUtils.clickView(this, mRead);
+        TodaysReadingActivity nextActivity = (TodaysReadingActivity)getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
+        // next activity is opened and captured.
+        assertNotNull("Today's reading activity is not launched", nextActivity);
+        nextActivity .finish();
     }
 
 }

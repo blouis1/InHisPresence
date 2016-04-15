@@ -1,5 +1,6 @@
 package com.nearerToThee.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.nearerToThee.R;
@@ -29,6 +31,7 @@ public class DevotionFragment extends Fragment {
     private View mRootView;
     private Controller mController;
     private TextView mVerse;
+    private ImageButton mRead;
 
     public DevotionFragment() {
     }
@@ -53,6 +56,13 @@ public class DevotionFragment extends Fragment {
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
         setImage();
         setVerse();
+        mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
+        mRead.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TodaysReadingActivity.class);
+                startActivity(intent);
+            }
+        });
         return mRootView;
     }
 
