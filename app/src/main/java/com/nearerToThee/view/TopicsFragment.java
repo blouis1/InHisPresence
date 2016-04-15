@@ -1,4 +1,4 @@
-package com.nearerToThee;
+package com.nearerToThee.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.nearerToThee.R;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -36,7 +38,7 @@ public class TopicsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.my_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
 
         ClickMe = (Button) rootView.findViewById(R.id.button);
         tv = (TextView) rootView.findViewById(R.id.textView2);

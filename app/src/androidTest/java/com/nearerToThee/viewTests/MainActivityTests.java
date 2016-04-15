@@ -4,15 +4,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.nearerToThee.DevotionFragment;
-import com.nearerToThee.MainActivity;
+import com.nearerToThee.view.DevotionFragment;
+import com.nearerToThee.view.MainActivity;
 import com.nearerToThee.R;
-import com.nearerToThee.SearchFragment;
-import com.nearerToThee.TopicsFragment;
+import com.nearerToThee.view.SearchFragment;
+import com.nearerToThee.view.TopicsFragment;
 
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Tests for the MainActivity class.
+ * Created by Betsy on 4/15/2016.
  */
 public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -92,8 +93,5 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         selectTab(0);
         assertTrue(fragmentPagerAdapter.getCurrentFragment() instanceof DevotionFragment);
     }
-
-
-
 
 }

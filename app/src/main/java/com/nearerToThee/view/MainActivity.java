@@ -1,5 +1,6 @@
-package com.nearerToThee;
+package com.nearerToThee.view;
 
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.nearerToThee.R;
 
 import java.util.Locale;
 
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //fab.setImageResource(R.drawable.ic_launch_black_24dp);
+        fab.setVisibility(View.GONE);
+        fab.setBackgroundColor(Color.TRANSPARENT);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
