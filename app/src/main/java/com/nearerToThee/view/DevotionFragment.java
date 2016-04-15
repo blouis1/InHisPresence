@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.nearerToThee.R;
 import com.nearerToThee.controller.Controller;
+import com.nearerToThee.utilities.ApplicationClass;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -53,6 +54,8 @@ public class DevotionFragment extends Fragment {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_devotion, container, false);
         mController = new Controller(mRootView.getContext());
+        ApplicationClass appClass = (ApplicationClass)getActivity().getApplicationContext();
+        appClass.setController(mController);
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
         setImage();
         setVerse();
@@ -78,51 +81,7 @@ public class DevotionFragment extends Fragment {
     }
 
     public void setImage() {
-        Calendar calendar;
-        calendar = Calendar.getInstance();
-        int day_of_week = calendar.get(Calendar.DAY_OF_WEEK); //(1-7 means sunday - saturday)
-        switch(day_of_week) {
-
-            case 1: //Sun
-                mRootView.setBackgroundResource(R.drawable.scenery2);
-                //mRootView.getBackground().setAlpha(75);
-                break;
-
-            case 2: //Mon
-                mRootView.setBackgroundResource(R.drawable.flower1);
-                //mRootView.getBackground().setAlpha(120);
-                break;
-
-            case 3: //Tue
-                mRootView.setBackgroundResource(R.drawable.orchid);
-                //mRootView.getBackground().setAlpha(75);
-                break;
-
-            case 4: //Wed
-                mRootView.setBackgroundResource(R.drawable.flower);
-                //mRootView.getBackground().setAlpha(120);
-                break;
-
-            case 5: //Thu
-                mRootView.setBackgroundResource(R.drawable.swan);
-                //mRootView.getBackground().setAlpha(90);
-                break;
-
-            case 6: //Fri
-                mRootView.setBackgroundResource(R.drawable.tulip_field);
-                mRootView.setTag(R.drawable.tulip_field);
-                //mRootView.getBackground().setAlpha(75);
-                break;
-
-            case 7: //Sat
-                mRootView.setBackgroundResource(R.drawable.pink_flower2);
-                //mRootView.getBackground().setAlpha(90);
-                break;
-
-            default:
-                mRootView.setBackgroundResource(R.drawable.flower);
-                //mRootView.getBackground().setAlpha(120);
-        }
+        mRootView.setBackgroundResource(mController.getImageForTheDay());
 
     }
 }
