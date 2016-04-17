@@ -7,10 +7,7 @@ import com.nearerToThee.model.Devotion;
 import com.nearerToThee.utilities.AssetReader;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -45,9 +42,9 @@ public class Controller {
     private Controller()  throws IOException{
         assetReader = new AssetReader(mContext);
         randomGenerator  = new Random();
-        fileName = getFileName();
+        setFileName();
         fileContent = assetReader.readFromAssetsFile(fileName, "devotions");
-        devotion = new Devotion(fileName);
+        devotion = new Devotion(fileContent);
     }
 
     public static synchronized Controller getInstance()  throws  IOException{
@@ -63,15 +60,19 @@ public class Controller {
     }
 
     public String getVerse() {
-        return devotion.getTodaysVerse(fileContent);
+        return devotion.getVerse();
     }
 
     public String getDevotion() {
-        return devotion.getTodaysDevotion(fileContent);
+        return devotion.getDevotion();
     }
 
-    public String getFileName() throws IOException{
-        return assetReader.getRandomFile(randomGenerator, "devotions");
+    public void setFileName() throws IOException{
+        fileName = assetReader.getRandomFile(randomGenerator, "devotions");
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public int getImageForTheDay() {

@@ -16,21 +16,21 @@ public class DevotionTests {
     String fileContent = "<verse>This is the verse.</verse><html>This is the devotion.</html>";
 
     public DevotionTests() {
-        devotion = new Devotion("unitTest.txt");
+        devotion = new Devotion(fileContent);
     }
 
     @Test
     public void testConstructorConstructsObjectWithGivenFileName() {
-        assertTrue(devotion.getFileName().equals("unitTest.txt"));
+        assertTrue(devotion.getFileContent().equals(fileContent));
     }
 
     @Test
     public void testCorrectVerseIsRetrieved() {
-        assertTrue(devotion.getTodaysVerse(fileContent).equals("This is the verse."));
+        assertTrue(devotion.getVerse().equals("This is the verse."));
     }
 
     @Test
     public void testConstructorCotructsObjectWithGivenFileName() {
-        assertTrue(devotion.getTodaysDevotion(fileContent).equals("This is the devotion."));
+        assertTrue(devotion.getDevotion().equals("This is the devotion."));
     }
 }
