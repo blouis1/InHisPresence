@@ -13,15 +13,16 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Class with methods to read files from Assets folders.
  * Created by Betsy on 4/15/2016.
  */
 public class AssetReader {
     private Context mContext;
-    private Random mRandomGenerator;
+    private Random randomGenerator;
 
     public AssetReader(Context context) {
         mContext = context;
-        mRandomGenerator = new Random();
+        randomGenerator = new Random();
     }
 
     /**
@@ -31,27 +32,34 @@ public class AssetReader {
      */
     public AssetReader(Context context, long seed) {
         this(context);
-        mRandomGenerator = new Random(seed);
     }
 
-    private ArrayList<String> getVerseFilesFromAssets() throws IOException {
+    public ArrayList<String> getFilesFromAssets(String folderName) throws IOException {
         ArrayList<String> filePool = new ArrayList<String>();
-        for (String name : mContext.getAssets().list("devotions"))
-        {
-            filePool.add(name);
+        if (folderName == null) {
+            for (String name : mContext.getAssets().list(""))
+            {
+                filePool.add(name);
+            }
+        } else {
+
+            for (String name : mContext.getAssets().list(folderName)) {
+                filePool.add(name);
+            }
         }
         return filePool;
     }
 
-    public String getRandomFile() throws IOException {
-        ArrayList<String> filePool = getVerseFilesFromAssets();
-        String fileName = filePool.get(mRandomGenerator.nextInt(filePool.size()));
+    public String getRandomFile(Random randomGenerator, String folderName) throws IOException {
+        ArrayList<String> filePool = getFilesFromAssets(folderName);
+        String fileName = filePool.get(randomGenerator.nextInt(filePool.size()));
         return fileName;
     }
 
-    public String readFromAssetsFile(String fileName) throws IOException{
+
+    public String readFromAssetsFile(String fileName, String folderName) throws IOException{
         byte[] buffer = null;
-        InputStream inputStream = mContext.getAssets().open("devotions/" + fileName);
+        InputStream inputStream = mContext.getAssets().open(folderName + "/" + fileName);
         int size = inputStream.available(); //size of the file in bytes
         buffer = new byte[size]; //declare the size of the byte array with size of the file
         inputStream.read(buffer); //read file

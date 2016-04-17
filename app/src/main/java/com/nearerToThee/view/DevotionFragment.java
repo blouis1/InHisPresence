@@ -1,5 +1,6 @@
 package com.nearerToThee.view;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -53,12 +54,22 @@ public class DevotionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_devotion, container, false);
-        mController = new Controller(mRootView.getContext());
-        ApplicationClass appClass = (ApplicationClass)getActivity().getApplicationContext();
-        appClass.setController(mController);
+        mController.initialize(this.getActivity().getApplicationContext());
+        try {
+            mController = Controller.getInstance();
+        }
+        catch (IOException ioe) {
+            new AlertDialog.Builder(this.getActivity())
+                    .setTitle("File Not Found")
+                    .setMessage("Could not load today's devotion.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
+
+        //ApplicationClass appClass = (ApplicationClass)getActivity().getApplicationContext();
+
+        //appClass.setController(mController);
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
-        setImage();
-        setVerse();
         mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
         mRead.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -66,22 +77,20 @@ public class DevotionFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        setImage();
+        setVerse();
+
         return mRootView;
     }
 
     public void setVerse() {
-        try {
-            String text_string = mController.getVerse();
-            Spanned text = Html.fromHtml(text_string);
-            mVerse.setText(text);        }
-        catch (IOException ioe){
-            // show error
-            Log.d("FILE_ERROR", ioe.getMessage());
-        }
+        mVerse.setText(Html.fromHtml(mController.getVerse()));
     }
 
     public void setImage() {
-        mRootView.setBackgroundResource(mController.getImageForTheDay());
-
+        int id = mController.getImageForTheDay();
+        mRootView.setBackgroundResource(id);
+        //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
+        mRootView.getBackground().setAlpha(255);
     }
 }

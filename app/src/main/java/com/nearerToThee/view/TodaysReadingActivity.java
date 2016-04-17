@@ -1,5 +1,6 @@
 package com.nearerToThee.view;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,9 +31,16 @@ public class TodaysReadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todays_reading);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ApplicationClass appClass = (ApplicationClass)getApplicationContext();
-        mController = appClass.getController();
+        try {
+            mController = Controller.getInstance();
+        }
+        catch (IOException ioe) {
+            new AlertDialog.Builder(this)
+                    .setTitle("File Not Found")
+                    .setMessage("Could not load today's devotion.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
         mRootView = this.findViewById(R.id.rootLayout);
         wvReading = (WebView) this.findViewById(R.id.wvReading);
         wvReading.setBackgroundColor(Color.TRANSPARENT);
@@ -52,18 +60,14 @@ public class TodaysReadingActivity extends AppCompatActivity {
     }
 
     public void setText() {
-        try {
-            String text_string = mController.getDevotion();
-            Spanned text = Html.fromHtml(text_string);
-            wvReading.loadData(text_string, "text/html", "UTF-8");        }
-        catch (IOException ioe){
-            // show error
-            Log.d("FILE_ERROR", ioe.getMessage());
-        }
+        String text_string = mController.getDevotion();
+        Spanned text = Html.fromHtml(text_string);
+        wvReading.loadData(text_string, "text/html", "UTF-8");
     }
 
     public void setImage() {
         mRootView.setBackgroundResource(mController.getImageForTheDay());
+        //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
         mRootView.getBackground().setAlpha(75);
     }
 

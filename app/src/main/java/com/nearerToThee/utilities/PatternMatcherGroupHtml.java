@@ -4,8 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A complete Java program that demonstrates how to
- * extract a tag from a line of HTML using the Pattern
+ * A Java class that extracts a tag from a line of HTML using the Pattern
  * and Matcher classes.
  */
 public class PatternMatcherGroupHtml {

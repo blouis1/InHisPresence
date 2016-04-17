@@ -7,54 +7,101 @@ import com.nearerToThee.model.Devotion;
 import com.nearerToThee.utilities.AssetReader;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 /**
  * Controller class
  * Created by Betsy on 4/15/2016.
  */
 public class Controller {
-    private Context mContext;
-    private AssetReader assetReader;
     private Devotion devotion;
+    private String fileName;
+    private AssetReader assetReader;
+    private static Controller instance = null;
+    private static Context mContext;
+    private Random randomGenerator;
+    private String fileContent;
 
-    public Controller(Context context) {
+    public static void initialize(Context context) {
         mContext = context;
+    }
+
+    /**
+     * Check if the class has been initialized
+     * @return true  if the class has been initialized
+     *         false Otherwise
+     */
+    public static boolean hasBeenInitialized() {
+        return mContext != null;
+    }
+
+    /**
+     * The private constructor. Here you can use the context to initialize your variables.
+     */
+    private Controller()  throws IOException{
         assetReader = new AssetReader(mContext);
-        devotion = new Devotion(assetReader);
+        randomGenerator  = new Random();
+        fileName = getFileName();
+        fileContent = assetReader.readFromAssetsFile(fileName, "devotions");
+        devotion = new Devotion(fileName);
     }
 
-    public String getVerse() throws IOException{
-        return devotion.getTodaysVerse();
+    public static synchronized Controller getInstance()  throws  IOException{
+        if (mContext == null) {
+            throw new IllegalArgumentException("Impossible to get the instance. This class must be initialized before");
+        }
+
+        if (instance == null) {
+            instance = new Controller();
+        }
+
+        return instance;
     }
 
-    public String getDevotion() throws IOException{
-        return devotion.getTodaysDevotion();
+    public String getVerse() {
+        return devotion.getTodaysVerse(fileContent);
+    }
+
+    public String getDevotion() {
+        return devotion.getTodaysDevotion(fileContent);
+    }
+
+    public String getFileName() throws IOException{
+        return assetReader.getRandomFile(randomGenerator, "devotions");
     }
 
     public int getImageForTheDay() {
         Calendar cal = Calendar.getInstance();
         int day_of_week = cal.get(Calendar.DAY_OF_WEEK); //(1-7 means sunday - saturday)
-
+        int id = 0;
         switch(day_of_week) {
 
             case 1: //Sun
-                return R.drawable.scenery2;
+                id = R.drawable.scenery2;
+                break;
             case 2: //Mon
-                return R.drawable.flower1;
+                id = R.drawable.flower1;
+                break;
             case 3: //Tue
-                return R.drawable.orchid;
+                id = R.drawable.orchid;
+                break;
             case 4: //Wed
-                return R.drawable.flower;
+                id = R.drawable.flower;
+                break;
             case 5: //Thu
-                return R.drawable.swan;
+                id = R.drawable.swan;
+                break;
             case 6: //Fri
-                return R.drawable.tulip_field;
+                id = R.drawable.tulip_field;
+                break;
             case 7: //Sat
-                return R.drawable.pink_flower2;
-            default:
-                return R.drawable.flower;
+                id = R.drawable.pink_flower2;
+                break;
         }
-
+        return id;
     }
 }
