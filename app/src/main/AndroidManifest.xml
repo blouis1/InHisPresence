@@ -3,8 +3,8 @@
     package="com.nearerToThee">
 
     <application
+        android:name=".utilities.ApplicationClass"
         android:allowBackup="true"
-        android:name="com.nearerToThee.utilities.ApplicationClass"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -22,6 +22,10 @@
         <activity
             android:name=".view.TodaysReadingActivity"
             android:label="@string/title_activity_todays_reading"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.FileListActivity"
+            android:label="@string/title_activity_file_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
