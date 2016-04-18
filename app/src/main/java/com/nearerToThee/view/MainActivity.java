@@ -1,6 +1,5 @@
 package com.nearerToThee.view;
 
-import android.app.Application;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nearerToThee.R;
-import com.nearerToThee.utilities.ApplicationClass;
 
 import java.util.Locale;
 

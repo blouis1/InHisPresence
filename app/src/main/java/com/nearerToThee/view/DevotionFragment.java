@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,8 @@ import android.widget.TextView;
 
 import com.nearerToThee.R;
 import com.nearerToThee.controller.Controller;
-import com.nearerToThee.utilities.ApplicationClass;
 
 import java.io.IOException;
-import java.util.Calendar;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -53,6 +49,7 @@ public class DevotionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         mRootView = inflater.inflate(R.layout.fragment_devotion, container, false);
         mController.initialize(this.getActivity().getApplicationContext());
         try {
@@ -66,9 +63,6 @@ public class DevotionFragment extends Fragment {
                     .show();
         }
 
-        //ApplicationClass appClass = (ApplicationClass)getActivity().getApplicationContext();
-
-        //appClass.setController(mController);
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
         mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
         mRead.setOnClickListener(new View.OnClickListener() {
