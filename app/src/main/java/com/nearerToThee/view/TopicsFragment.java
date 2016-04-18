@@ -15,11 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearerToThee.R;
+import com.nearerToThee.data_access_layer.DatabaseHelper;
+import com.nearerToThee.model.Tag;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class TopicsFragment extends Fragment {
+
+    private DatabaseHelper dbHelper;
 
     public TopicsFragment() {
     }
@@ -37,11 +44,15 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String[] textViewValues = {"Anxiety & Worry", "Joy", "Peace", "Love", "Despair", "Hope", "Classic"};
+        //String[] textViewValues = {"Anxiety & Worry", "Joy", "Peace", "Love", "Despair", "Hope", "Classic"};
+
         View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
 
+        dbHelper = new DatabaseHelper(this.getActivity().getApplicationContext());
+        ArrayList<Tag> tagList = dbHelper.getAllTags();
+
         GridView gridview = (GridView) rootView.findViewById(R.id.gridViewCustom);
-        gridview.setAdapter(new TextViewAdapter(getActivity(), textViewValues));
+        gridview.setAdapter(new TextViewAdapter(getActivity(), tagList));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -56,11 +67,12 @@ public class TopicsFragment extends Fragment {
 
     public class TextViewAdapter extends BaseAdapter {
         private Context context;
-        private final String[] textViewValues;
+        //private final String[] textViewValues;
+        private final Tag[] tagList;
 
-        public TextViewAdapter(Context context, String[] textViewValues) {
+        public TextViewAdapter(Context context, ArrayList<Tag> tagList) {
             this.context = context;
-            this.textViewValues = textViewValues;
+            this.tagList = tagList.toArray(new Tag[tagList.size()]);
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -80,7 +92,7 @@ public class TopicsFragment extends Fragment {
                 // set value into textview
                 TextView textView = (TextView) gridView
                         .findViewById(R.id.grid_item_label);
-                textView.setText(textViewValues[position]);
+                textView.setText(tagList[position].getTagName());
             } else {
                 gridView = (View) convertView;
             }
@@ -90,7 +102,7 @@ public class TopicsFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return textViewValues.length;
+            return tagList.length;
         }
 
         @Override
