@@ -1,6 +1,7 @@
 package com.nearerToThee.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 public class TopicsFragment extends Fragment {
 
     private DatabaseHelper dbHelper;
+    public final static String SELECTED_TAG = "com.nearerToThee.SELECTED_TAG";
 
     public TopicsFragment() {
     }
@@ -44,8 +46,6 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //String[] textViewValues = {"Anxiety & Worry", "Joy", "Peace", "Love", "Despair", "Hope", "Classic"};
-
         View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
 
         dbHelper = new DatabaseHelper(this.getActivity().getApplicationContext());
@@ -57,8 +57,13 @@ public class TopicsFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
+                TextView textView = (TextView)v.findViewById(R.id.grid_item_label);
+                String selectedTagName = textView.getText().toString();
+                Toast.makeText(getActivity(), "" + selectedTagName,
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), FileListActivity.class);
+                intent.putExtra(SELECTED_TAG, selectedTagName);
+                startActivity(intent);
             }
         });
 
