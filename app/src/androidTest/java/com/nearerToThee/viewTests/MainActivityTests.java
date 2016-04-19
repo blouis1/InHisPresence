@@ -4,7 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.nearerToThee.view.DevotionFragment;
+import com.nearerToThee.view.VerseFragment;
 import com.nearerToThee.view.MainActivity;
 import com.nearerToThee.R;
 import com.nearerToThee.view.SearchFragment;
@@ -91,7 +91,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
 
     public void testFirstTabOpensDevotionFragment() {
         selectTab(0);
-        assertTrue(fragmentPagerAdapter.getCurrentFragment() instanceof DevotionFragment);
+        assertTrue(fragmentPagerAdapter.getCurrentFragment() instanceof VerseFragment);
     }
 
 }

@@ -7,4 +7,8 @@
     <string name="action_search">Search</string>
     <string name="action_favorite">Bookmark</string>
     <string name="title_activity_file_list">FileListActivity</string>
+    <string name="app_label">Nearer To Thee</string>
+    <string name="search_hint">Search keyword</string>
+    <string name="title_activity_sample_search">SampleSearchActivity</string>
+    <string name="button_search">Search</string>
 </resources>

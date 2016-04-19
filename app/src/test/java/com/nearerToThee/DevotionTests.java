@@ -31,6 +31,6 @@ public class DevotionTests {
 
     @Test
     public void testConstructorCotructsObjectWithGivenFileName() {
-        assertTrue(devotion.getDevotion().equals("This is the devotion."));
+        assertTrue(devotion.getReading().equals("This is the devotion."));
     }
 }

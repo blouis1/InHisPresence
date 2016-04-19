@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DevotionFragment extends Fragment {
+public class VerseFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -30,16 +30,17 @@ public class DevotionFragment extends Fragment {
     private Controller mController;
     private TextView mVerse;
     private ImageButton mRead;
+    public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
 
-    public DevotionFragment() {
+    public VerseFragment() {
     }
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static DevotionFragment newInstance(int sectionNumber) {
-        DevotionFragment fragment = new DevotionFragment();
+    public static VerseFragment newInstance(int sectionNumber) {
+        VerseFragment fragment = new VerseFragment();
         //Bundle args = new Bundle();
         //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //fragment.setArguments(args);
@@ -50,24 +51,17 @@ public class DevotionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mRootView = inflater.inflate(R.layout.fragment_devotion, container, false);
-        mController.initialize(this.getActivity().getApplicationContext());
-        try {
-            mController = Controller.getInstance();
-        }
-        catch (IOException ioe) {
-            new AlertDialog.Builder(this.getActivity())
-                    .setTitle("File Not Found")
-                    .setMessage("Could not load today's devotion.")
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show();
-        }
+        mRootView = inflater.inflate(R.layout.fragment_verse, container, false);
+        //mController.initialize(this.getActivity().getApplicationContext());
+        mController = Controller.getInstance();
 
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
         mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
         mRead.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TodaysReadingActivity.class);
+                Intent intent = new Intent(getActivity(), ReadDevotionActivity.class);
+                String fileName = mController.getTodaysFileName();
+                intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
             }
         });
@@ -78,7 +72,18 @@ public class DevotionFragment extends Fragment {
     }
 
     public void setVerse() {
-        mVerse.setText(Html.fromHtml(mController.getVerse()));
+
+        try {
+            mVerse.setText(Html.fromHtml(mController.getTodaysVerse()));
+        }
+        catch (IOException ioe) {
+            mRead.setEnabled(false);
+            new AlertDialog.Builder(this.getActivity())
+                    .setTitle("File Not Found")
+                    .setMessage("Could not load today's devotion.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
     }
 
     public void setImage() {

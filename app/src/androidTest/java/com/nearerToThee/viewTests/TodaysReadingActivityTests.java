@@ -1,30 +1,24 @@
 package com.nearerToThee.viewTests;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.webkit.WebView;
 
 import com.nearerToThee.R;
-import com.nearerToThee.view.DevotionFragment;
-import com.nearerToThee.view.MainActivity;
-import com.nearerToThee.view.SearchFragment;
-import com.nearerToThee.view.TodaysReadingActivity;
-import com.nearerToThee.view.TopicsFragment;
+import com.nearerToThee.view.ReadDevotionActivity;
 
 
 /**
- * Tests for the TodaysReadingActivity class.
+ * Tests for the ReadDevotionActivity class.
  * Created by Betsy on 4/15/2016.
  */
-public class TodaysReadingActivityTests extends ActivityInstrumentationTestCase2<TodaysReadingActivity> {
+public class TodaysReadingActivityTests extends ActivityInstrumentationTestCase2<ReadDevotionActivity> {
 
-    private TodaysReadingActivity mActivity;
+    private ReadDevotionActivity mActivity;
     private WebView mWebView;
 
     public TodaysReadingActivityTests()
     {
-        super(TodaysReadingActivity.class);
+        super(ReadDevotionActivity.class);
     }
 
     @Override

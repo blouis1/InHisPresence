@@ -7,7 +7,9 @@ import com.nearerToThee.model.Devotion;
 import com.nearerToThee.utilities.AssetReader;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -39,15 +41,15 @@ public class Controller {
     /**
      * The private constructor. Here you can use the context to initialize your variables.
      */
-    private Controller()  throws IOException{
+    private Controller()  {
         assetReader = new AssetReader(mContext);
-        randomGenerator  = new Random();
-        setFileName();
-        fileContent = assetReader.readFromAssetsFile(fileName, "devotions");
-        devotion = new Devotion(fileContent);
+        //randomGenerator  = new Random();
+        //setFileName();
+        //fileContent = assetReader.readFromAssetsFile(fileName, "devotions");
+        //devotion = new Devotion(fileContent);
     }
 
-    public static synchronized Controller getInstance()  throws  IOException{
+    public static synchronized Controller getInstance()  {
         if (mContext == null) {
             throw new IllegalArgumentException("Impossible to get the instance. This class must be initialized before");
         }
@@ -59,20 +61,24 @@ public class Controller {
         return instance;
     }
 
-    public String getVerse() {
-        return devotion.getVerse();
-    }
-
-    public String getDevotion() {
-        return devotion.getDevotion();
-    }
-
-    public void setFileName() throws IOException{
-        fileName = assetReader.getRandomFile(randomGenerator, "devotions");
-    }
-
-    public String getFileName() {
+    public String getTodaysFileName() {
+        Calendar calendar = Calendar.getInstance();
+        //Get Text File name and format it to get file name
+        SimpleDateFormat sdf2 = new SimpleDateFormat("MMdd", Locale.US);
+        String fileName = sdf2.format(calendar.getTime()) + ".txt";
         return fileName;
+    }
+
+    public String getTodaysVerse() throws IOException{
+        return new Devotion(readFromFile(getTodaysFileName())).getVerse();
+    }
+
+    public String readFromFile(String fileName) throws IOException{
+        return assetReader.readFromAssetsFile(fileName, "devotions");
+    }
+
+    public String getReading(String fileName) throws IOException {
+        return new Devotion(readFromFile(fileName)).getReading();
     }
 
     public int getImageForTheDay() {

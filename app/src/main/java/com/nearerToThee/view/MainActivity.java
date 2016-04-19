@@ -12,12 +12,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.nearerToThee.R;
+import com.nearerToThee.controller.Controller;
 
 import java.util.Locale;
 
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private Controller mController;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mController.initialize(this.getApplicationContext());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,13 +103,13 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             switch(position) {
                 case 0:
-                    return DevotionFragment.newInstance(position + 1);
+                    return VerseFragment.newInstance(position + 1);
                 case 1:
                     return TopicsFragment.newInstance();
                 case 2:
                     return SearchFragment.newInstance();
                 default:
-                    return DevotionFragment.newInstance(position + 1);
+                    return VerseFragment.newInstance(position + 1);
             }
         }
 

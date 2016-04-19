@@ -11,9 +11,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.nearerToThee.R;
-import com.nearerToThee.view.DevotionFragment;
+import com.nearerToThee.view.VerseFragment;
 import com.nearerToThee.view.MainActivity;
-import com.nearerToThee.view.TodaysReadingActivity;
+import com.nearerToThee.view.ReadDevotionActivity;
 
 /**
  * Tests for the Devotion Fragment class.
@@ -21,7 +21,7 @@ import com.nearerToThee.view.TodaysReadingActivity;
  */
 public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private DevotionFragment devotionFragment;
+    private VerseFragment devotionFragment;
     FragmentManager mFragmentManager;
     private MainActivity m_activity;
     private ViewPager mViewPager;
@@ -38,11 +38,11 @@ public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<Main
 
     @Override
     protected void setUp() {
-        devotionFragment = new DevotionFragment();
+        devotionFragment = new VerseFragment();
         m_activity = getActivity();
         mViewPager = (ViewPager) m_activity.findViewById(R.id.container);
         fragmentPagerAdapter = (MainActivity.SectionsPagerAdapter) mViewPager.getAdapter();
-        DevotionFragment devotionFragment = (DevotionFragment) fragmentPagerAdapter.getCurrentFragment();
+        VerseFragment devotionFragment = (VerseFragment) fragmentPagerAdapter.getCurrentFragment();
         mRootView = devotionFragment.getView().getRootView();
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
         mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
@@ -63,10 +63,10 @@ public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<Main
     public void testClickingImageButtonOpensTodaysReadingActivity() {
         // register next activity that need to be monitored.
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
-                .addMonitor(TodaysReadingActivity.class.getName(), null, false);
+                .addMonitor(ReadDevotionActivity.class.getName(), null, false);
         // Tap five letter button
         TouchUtils.clickView(this, mRead);
-        TodaysReadingActivity nextActivity = (TodaysReadingActivity)getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
+        ReadDevotionActivity nextActivity = (ReadDevotionActivity)getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
         // next activity is opened and captured.
         assertNotNull("Today's reading activity is not launched", nextActivity);
         nextActivity .finish();

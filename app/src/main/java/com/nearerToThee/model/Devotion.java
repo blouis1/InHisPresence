@@ -35,7 +35,7 @@ public class Devotion {
         return this.verse;
     }
 
-    public String getDevotion() {
+    public String getReading() {
         this.devotion = patternMatcher.getStringBetweenTags(fileContent, "<html>(.+)</html>");
         return this.devotion;
     }

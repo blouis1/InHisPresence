@@ -1,19 +1,12 @@
 package com.nearerToThee.utilityTests;
 
-import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.nearerToThee.R;
-import com.nearerToThee.utilities.ApplicationClass;
 import com.nearerToThee.utilities.AssetReader;
-import com.nearerToThee.view.DevotionFragment;
 import com.nearerToThee.view.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Tests the AssetReader class.

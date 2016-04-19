@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.nearerToThee.model.File;
+import com.nearerToThee.model.Keyword;
 import com.nearerToThee.model.Tag;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -33,6 +33,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     private static final String TABLE_FILES = "files";
     private static final String TABLE_TAGS = "tags";
     private static final String TABLE_FILES_TAGS = "file_tags";
+    private static final String TABLE_KEYWORDS = "keywords";
+    private static final String TABLE_KEYWORD_TAGS = "keyword_tags";
 
     // Common column names
     private static final String KEY_ID = "_id";
@@ -48,6 +50,13 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     // FILE_TAGS Table - column names
     private static final String KEY_FILE_ID = "file_id";
     private static final String KEY_TAG_ID = "tag_id";
+
+    // KEYWORDS Table - column names
+    private static final String KEY_KEYWORD_NAME = "keyword";
+
+    // KEYWORD_TAGS Table - column names
+    private static final String KEY_KEYWORD_ID = "keyword_id";
+
 
     // Table Create Statements
     // File table create statement
@@ -152,6 +161,46 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return files;
     }
 
+    public ArrayList<File> getFilesFromKeyword(String keyword) {
+
+        ArrayList<File> files = new ArrayList<File>();
+
+        if (keyword.trim().equals("") || keyword == null) {
+            return files;
+        }
+
+        String selectQuery = "SELECT f." + KEY_ID + ", f." + KEY_FILE_NAME + ", f." + KEY_FILE_TITLE
+                + " FROM " + TABLE_KEYWORDS + " k"
+                + " JOIN " + TABLE_KEYWORD_TAGS + " kt ON kt." + KEY_KEYWORD_ID + " = k." + KEY_ID
+                + " JOIN " + TABLE_TAGS + " t ON t." + KEY_ID + " = kt." + KEY_TAG_ID
+                + " JOIN " + TABLE_FILES_TAGS + " ft ON ft." + KEY_TAG_ID + " = t." + KEY_ID
+                + " JOIN " + TABLE_FILES + " f ON f." + KEY_ID + " = ft." + KEY_FILE_ID
+                + " WHERE k." + KEY_KEYWORD_NAME + " LIKE  \"%" + keyword + "%\""
+                + " GROUP BY f." + KEY_FILE_NAME;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    File file = new File();
+                    file.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
+                    file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
+                    file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
+                    // adding to file list
+                    files.add(file);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return files;
+    }
     /*
  * getting all files under single tag
  * */
@@ -180,7 +229,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                     int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
                     file.setIsFavorite((isFavorite == 1) ? true : false);
 
-                    // adding to todo list
+                    // adding to file list
                     files.add(file);
                 } while (cursor.moveToNext());
             }
@@ -252,6 +301,32 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         }
         db.close();
         return tags;
+    }
+
+    /**
+     * getting all keywords
+     * */
+    public ArrayList<String> getAllKeywords() {
+        ArrayList<String> keywords = new ArrayList<String>();
+        String selectQuery = "SELECT  * FROM " + TABLE_KEYWORDS;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                   // adding to keywords list
+                   keywords.add(cursor.getString(cursor.getColumnIndex(KEY_KEYWORD_NAME)));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        db.close();
+        return keywords;
     }
 
     /*

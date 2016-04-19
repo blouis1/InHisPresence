@@ -1,6 +1,7 @@
 package com.nearerToThee.view;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,34 +17,29 @@ import android.webkit.WebView;
 
 import com.nearerToThee.R;
 import com.nearerToThee.controller.Controller;
-import com.nearerToThee.utilities.ApplicationClass;
 
 import java.io.IOException;
 
-public class TodaysReadingActivity extends AppCompatActivity {
+public class ReadDevotionActivity extends AppCompatActivity {
 
     private View mRootView;
     private Controller mController;
     private WebView wvReading;
+    private String mFileName;
+    public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todays_reading);
+        setContentView(R.layout.activity_read_devotion);
+
+        Intent intent = getIntent();
+        mFileName = intent.getStringExtra(FILE_NAME);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         toolbar.setTitle("NearerToThee".toString());
         setSupportActionBar(toolbar);
-
-        try {
-            mController = Controller.getInstance();
-        }
-        catch (IOException ioe) {
-            new AlertDialog.Builder(this)
-                    .setTitle("File Not Found")
-                    .setMessage("Could not load today's devotion.")
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show();
-        }
+        mController = Controller.getInstance();
         mRootView = this.findViewById(R.id.rootLayout);
         wvReading = (WebView) this.findViewById(R.id.wvReading);
         wvReading.setBackgroundColor(Color.TRANSPARENT);
@@ -64,9 +59,17 @@ public class TodaysReadingActivity extends AppCompatActivity {
     }
 
     public void setText() {
-        String text_string = mController.getDevotion();
-        Spanned text = Html.fromHtml(text_string);
-        wvReading.loadData(text_string, "text/html", "UTF-8");
+        try {
+            wvReading.loadData(mController.getReading(mFileName), "text/html", "UTF-8");
+        }
+        catch (IOException ioe) {
+                new AlertDialog.Builder(this)
+                        .setTitle("File Not Found")
+                        .setMessage("Could not load today's devotion.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
+
     }
 
     public void setImage() {
