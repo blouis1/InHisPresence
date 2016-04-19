@@ -155,8 +155,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     /*
  * getting all files under single tag
  * */
-    public List<File> getAllFilesByTag(String tag_name) {
-        List<File> files = new ArrayList<File>();
+    public ArrayList<File> getAllFilesByTag(String tag_name) {
+        ArrayList<File> files = new ArrayList<File>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_FILES + " td, "
                 + TABLE_TAGS + " tg, " + TABLE_FILES_TAGS + " tt WHERE tg."
@@ -176,6 +176,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                     File file = new File();
                     file.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                     file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
+                    file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
                     int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
                     file.setIsFavorite((isFavorite == 1) ? true : false);
 

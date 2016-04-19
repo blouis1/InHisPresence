@@ -9,17 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nearerToThee.R;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 import com.nearerToThee.model.Tag;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -59,8 +55,7 @@ public class TopicsFragment extends Fragment {
                                     int position, long id) {
                 TextView textView = (TextView)v.findViewById(R.id.grid_item_label);
                 String selectedTagName = textView.getText().toString();
-                Toast.makeText(getActivity(), "" + selectedTagName,
-                        Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getActivity(), FileListActivity.class);
                 intent.putExtra(SELECTED_TAG, selectedTagName);
                 startActivity(intent);
@@ -85,24 +80,24 @@ public class TopicsFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View gridView;
+            View gridViewItem;
 
             if (convertView == null) {
 
-                gridView = new View(context);
+                gridViewItem = new View(context);
 
-                // get layout from mobile.xml
-                gridView = inflater.inflate(R.layout.grid_row, null);
+                // get layout from grid_item.xml
+                gridViewItem = inflater.inflate(R.layout.grid_item, null);
 
                 // set value into textview
-                TextView textView = (TextView) gridView
+                TextView textView = (TextView) gridViewItem
                         .findViewById(R.id.grid_item_label);
                 textView.setText(tagList[position].getTagName());
             } else {
-                gridView = (View) convertView;
+                gridViewItem = (View) convertView;
             }
 
-            return gridView;
+            return gridViewItem;
         }
 
         @Override

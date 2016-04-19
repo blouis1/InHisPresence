@@ -1,4 +1,4 @@
-﻿<verse><i>"Let love be without dissimulation."</i> Romans 12:9</verse>
+﻿<aside><i>"Let love be without dissimulation."</i> Romans 12:9</aside>
 
 <html>
 <head>

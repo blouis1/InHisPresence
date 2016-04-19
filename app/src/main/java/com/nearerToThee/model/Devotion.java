@@ -31,7 +31,7 @@ public class Devotion {
      */
     public String getVerse() {
         // read from file to get verse
-        this.verse = patternMatcher.getStringBetweenTags(fileContent, "<verse>(.+)</verse>");
+        this.verse = patternMatcher.getStringBetweenTags(fileContent, "<aside>(.+)</aside>");
         return this.verse;
     }
 
@@ -39,9 +39,5 @@ public class Devotion {
         this.devotion = patternMatcher.getStringBetweenTags(fileContent, "<html>(.+)</html>");
         return this.devotion;
     }
-
-
-
-
 
 }
