@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class DevotionTests {
 
     private Devotion devotion;
-    String fileContent = "<verse>This is the verse.</verse><html>This is the devotion.</html>";
+    String fileContent = "<html><aside>This is the verse.</aside>This is the devotion.</html>";
 
     public DevotionTests() {
         devotion = new Devotion(fileContent);
@@ -31,6 +31,6 @@ public class DevotionTests {
 
     @Test
     public void testConstructorCotructsObjectWithGivenFileName() {
-        assertTrue(devotion.getReading().equals("This is the devotion."));
+        assertTrue(devotion.getReading().equals("<aside>This is the verse.</aside>This is the devotion."));
     }
 }

@@ -14,18 +14,6 @@ public class File {
     public File() {
     }
 
-    public File(String fileName, String fileTitle, boolean isFavorite) {
-        this.fileName = fileName;
-        this.fileTitle = fileTitle;
-        this.isFavorite = isFavorite;
-    }
-
-    public File(int id, String fileName, boolean isFavorite) {
-        this.id = id;
-        this.fileName = fileName;
-        this.isFavorite = isFavorite;
-    }
-
     // setters
     public void setId(int id) {
         this.id = id;
@@ -52,9 +40,7 @@ public class File {
         return this.fileName;
     }
 
-    public String getFileTitle() {
-        return this.fileTitle;
-    }
+    public String getFileTitle() { return this.fileTitle; }
 
     public boolean getIsFavorite() {
         return this.isFavorite;

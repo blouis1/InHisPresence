@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nearerToThee.model.File;
-import com.nearerToThee.model.Keyword;
 import com.nearerToThee.model.Tag;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
