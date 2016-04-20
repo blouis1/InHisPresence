@@ -2,10 +2,13 @@ package com.nearerToThee.view;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -32,14 +35,19 @@ public class ReadDevotionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_read_devotion);
 
         Intent intent = getIntent();
         mFileName = intent.getStringExtra(FILE_NAME);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
-        toolbar.setTitle("NearerToThee".toString());
+        toolbar.setTitle("NearerToThee");
         setSupportActionBar(toolbar);
+
+        // Add up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mController = Controller.getInstance();
         mRootView = this.findViewById(R.id.rootLayout);
         wvReading = (WebView) this.findViewById(R.id.wvReading);
@@ -57,6 +65,12 @@ public class ReadDevotionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //here you can handle orientation change
     }
 
     public void setText() {
@@ -95,6 +109,10 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         if (id == R.id.action_search) {

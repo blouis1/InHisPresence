@@ -80,13 +80,13 @@ public class Controller {
         switch(day_of_week) {
 
             case 1: //Sun
-                id = R.drawable.scenery2;
+                id = R.drawable.starfish;
                 break;
             case 2: //Mon
-                id = R.drawable.flower1;
+                id = R.drawable.clouds;
                 break;
             case 3: //Tue
-                id = R.drawable.orchid;
+                id = R.drawable.sunset_grass;
                 break;
             case 4: //Wed
                 id = R.drawable.flower;
@@ -95,10 +95,10 @@ public class Controller {
                 id = R.drawable.swan;
                 break;
             case 6: //Fri
-                id = R.drawable.tulip_field;
+                id = R.drawable.daisy;
                 break;
             case 7: //Sat
-                id = R.drawable.pink_flower2;
+                id = R.drawable.clear_ocean;
                 break;
         }
         return id;

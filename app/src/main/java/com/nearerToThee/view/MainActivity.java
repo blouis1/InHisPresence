@@ -1,6 +1,8 @@
 package com.nearerToThee.view;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -44,15 +46,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
+
         mController.initialize(this.getApplicationContext());
         Intent i = getIntent();
         String fragmentName = i.getStringExtra(SEARCH_FRAGMENT);
         Log.e("Fragment In Intent", "Fragment Name: " + fragmentName);
         FragmentManager manager = getSupportFragmentManager();
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //To show launcher icon in appbar
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        //getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         //toolbar.setVisibility(View.GONE);
 
         // Create the adapter that will return a fragment for each of the three
@@ -82,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //here you can handle orientation change
     }
 
 
