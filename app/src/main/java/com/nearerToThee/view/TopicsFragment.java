@@ -2,6 +2,7 @@ package com.nearerToThee.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -92,6 +94,8 @@ public class TopicsFragment extends Fragment {
                 // set value into textview
                 TextView textView = (TextView) gridViewItem
                         .findViewById(R.id.grid_item_label);
+                Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Gabriela-Regular.ttf");
+                textView.setTypeface(typeFace);
                 textView.setText(tagList[position].getTagName());
             } else {
                 gridViewItem = (View) convertView;

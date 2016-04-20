@@ -52,7 +52,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
     }
 
     public void testFirstTabIsDevotion() {
-        assertTrue(mTabLayout.getTabAt(0).getText().toString().equals("Devotion".toUpperCase()));
+        assertTrue(mTabLayout.getTabAt(0).getText().toString().equals("Today".toUpperCase()));
     }
 
     public void testSecondTabIsTopics() {

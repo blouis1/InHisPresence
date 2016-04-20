@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             Locale locale = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "Devotion".toUpperCase(locale);
+                    return "Today".toUpperCase(locale);
                 case 1:
                     return "Topics".toUpperCase(locale);
                 case 2:
