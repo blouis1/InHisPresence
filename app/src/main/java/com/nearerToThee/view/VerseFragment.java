@@ -2,9 +2,11 @@ package com.nearerToThee.view;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +75,8 @@ public class VerseFragment extends Fragment {
 
     public void setVerse() {
 
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Gabriela-Regular.ttf");
+        mVerse.setTypeface(typeFace);
         try {
             mVerse.setText(Html.fromHtml(mController.getTodaysVerse()));
         }
@@ -80,7 +84,7 @@ public class VerseFragment extends Fragment {
             mRead.setEnabled(false);
             new AlertDialog.Builder(this.getActivity())
                     .setTitle("File Not Found")
-                    .setMessage("Could not load today's devotion.")
+                    .setMessage("Could not load devotion.")
                     .setPositiveButton(android.R.string.ok, null)
                     .show();
         }

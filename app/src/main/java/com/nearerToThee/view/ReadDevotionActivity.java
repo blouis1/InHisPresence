@@ -75,12 +75,16 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
     public void setText() {
         try {
-            wvReading.loadData(mController.getReading(mFileName), "text/html", "UTF-8");
+            String head = "<head><style>@font-face {font-family: 'Gabriela-Regular';src: url('file:///android_asset/fonts/Gabriela-Regular.ttf');}" +
+                    "@font-face {font-family: 'Junge-Regular';src: url('file:///android_asset/fonts/Junge-Regular.ttf');}" +
+                    "body {font-family: 'Junge-Regular'; font-weight: 600;}h1 {font-family: 'Gabriela-Regular'; }aside {font-family: 'Gabriela-Regular'; font-style: italic; font-weight: 400;}</style></head>";
+            String text="<html>" +head + "<body >" + mController.getReading(mFileName) + "</body></html>";
+            wvReading.loadDataWithBaseURL("", text, "text/html", "UTF-8", null);
         }
         catch (IOException ioe) {
                 new AlertDialog.Builder(this)
                         .setTitle("File Not Found")
-                        .setMessage("Could not load today's devotion.")
+                        .setMessage("Could not load devotion.")
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
             }
