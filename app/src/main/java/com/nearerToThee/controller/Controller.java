@@ -10,20 +10,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Random;
 
 /**
  * Controller class
  * Created by Betsy on 4/15/2016.
  */
 public class Controller {
-    private Devotion devotion;
-    private String fileName;
+
     private AssetReader assetReader;
     private static Controller instance = null;
     private static Context mContext;
-    private Random randomGenerator;
-    private String fileContent;
 
     public static void initialize(Context context) {
         mContext = context;
@@ -43,10 +39,6 @@ public class Controller {
      */
     private Controller()  {
         assetReader = new AssetReader(mContext);
-        //randomGenerator  = new Random();
-        //setFileName();
-        //fileContent = assetReader.readFromAssetsFile(fileName, "devotions");
-        //devotion = new Devotion(fileContent);
     }
 
     public static synchronized Controller getInstance()  {

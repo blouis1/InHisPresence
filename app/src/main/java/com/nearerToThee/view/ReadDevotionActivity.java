@@ -27,6 +27,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private WebView wvReading;
     private String mFileName;
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
+    public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,11 @@ public class ReadDevotionActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_search) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

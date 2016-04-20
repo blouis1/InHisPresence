@@ -1,5 +1,6 @@
 package com.nearerToThee.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private Controller mController;
+    public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mController.initialize(this.getApplicationContext());
+        Intent i = getIntent();
+        String fragmentName = i.getStringExtra(SEARCH_FRAGMENT);
+        Log.e("Fragment In Intent", "Fragment Name: " + fragmentName);
+        FragmentManager manager = getSupportFragmentManager();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(manager);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -58,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        if (fragmentName != null && fragmentName.equals(fragmentName)) {
+            mViewPager.setCurrentItem(2);
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         //fab.setImageResource(R.drawable.ic_launch_black_24dp);

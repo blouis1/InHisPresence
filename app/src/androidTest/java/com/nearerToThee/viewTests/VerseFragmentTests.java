@@ -19,26 +19,24 @@ import com.nearerToThee.view.ReadDevotionActivity;
  * Tests for the Devotion Fragment class.
  * Created by Betsy on 4/15/2016.
  */
-public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<MainActivity> {
+public class VerseFragmentTests extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private VerseFragment devotionFragment;
-    FragmentManager mFragmentManager;
+    private VerseFragment verseFragment;
     private MainActivity m_activity;
     private ViewPager mViewPager;
-    private TabLayout mTabLayout;
     private MainActivity.SectionsPagerAdapter fragmentPagerAdapter;
     private View mRootView;
     private TextView mVerse;
     private ImageButton mRead;
 
-    public DevotionFragmentTests()
+    public VerseFragmentTests()
     {
         super(MainActivity.class);
     }
 
     @Override
     protected void setUp() {
-        devotionFragment = new VerseFragment();
+        verseFragment = new VerseFragment();
         m_activity = getActivity();
         mViewPager = (ViewPager) m_activity.findViewById(R.id.container);
         fragmentPagerAdapter = (MainActivity.SectionsPagerAdapter) mViewPager.getAdapter();
@@ -49,7 +47,7 @@ public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<Main
     }
 
     public void testFragmentIsNotNull() {
-        assertNotNull(devotionFragment);
+        assertNotNull(verseFragment);
     }
 
     public void testTextViewIsVisible() {
@@ -64,7 +62,7 @@ public class DevotionFragmentTests extends ActivityInstrumentationTestCase2<Main
         // register next activity that need to be monitored.
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
                 .addMonitor(ReadDevotionActivity.class.getName(), null, false);
-        // Tap five letter button
+        // Tap read button
         TouchUtils.clickView(this, mRead);
         ReadDevotionActivity nextActivity = (ReadDevotionActivity)getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
         // next activity is opened and captured.

@@ -11,12 +11,12 @@ import com.nearerToThee.view.ReadDevotionActivity;
  * Tests for the ReadDevotionActivity class.
  * Created by Betsy on 4/15/2016.
  */
-public class TodaysReadingActivityTests extends ActivityInstrumentationTestCase2<ReadDevotionActivity> {
+public class ReadDevotionActivityTests extends ActivityInstrumentationTestCase2<ReadDevotionActivity> {
 
     private ReadDevotionActivity mActivity;
     private WebView mWebView;
 
-    public TodaysReadingActivityTests()
+    public ReadDevotionActivityTests()
     {
         super(ReadDevotionActivity.class);
     }

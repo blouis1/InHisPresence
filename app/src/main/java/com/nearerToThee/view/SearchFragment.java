@@ -100,7 +100,6 @@ public class SearchFragment extends Fragment {
                     listView.setAdapter(null);
                 }
                 searchButton.setEnabled(searchBox.getText().toString().trim().length()!=0);
-
             }
 
             @Override
