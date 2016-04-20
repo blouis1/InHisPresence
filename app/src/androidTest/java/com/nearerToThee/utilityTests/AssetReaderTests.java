@@ -28,7 +28,7 @@ public class AssetReaderTests extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testNumberOfFilesInAssetsFolder() throws IOException {
-        assertEquals("File count incorrect", 2, reader.getFilesFromAssets("devotions").size());
+        assertEquals("File count incorrect", 2, reader.getFilesFromAssets("testFiles").size());
     }
 
     public void testGetFilesFromAssetsSubFolder() throws IOException {
@@ -41,7 +41,7 @@ public class AssetReaderTests extends ActivityInstrumentationTestCase2<MainActiv
     public void testReadFromAssetsFile() throws IOException {
         String expectedText = "This is text for unit testing ";
         String readerText = reader.readFromAssetsFile("unitTest.txt", "testFiles");
-        assertTrue(readerText.length() == (expectedText.length()));
+        assertEquals(expectedText.length(), readerText.length());
     }
 
     // test the random generator gets a random file each time

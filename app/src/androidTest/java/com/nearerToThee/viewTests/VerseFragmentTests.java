@@ -1,15 +1,12 @@
 package com.nearerToThee.viewTests;
 
 import android.app.Instrumentation;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.nearerToThee.R;
 import com.nearerToThee.view.VerseFragment;
 import com.nearerToThee.view.MainActivity;

@@ -53,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mController.initialize(this.getApplicationContext());
         Intent i = getIntent();
         String fragmentName = i.getStringExtra(SEARCH_FRAGMENT);
-        Log.e("Fragment In Intent", "Fragment Name: " + fragmentName);
         FragmentManager manager = getSupportFragmentManager();
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -129,16 +127,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
+            Fragment fragment = new Fragment();
             switch(position) {
                 case 0:
-                    return VerseFragment.newInstance(position + 1);
+                    fragment = VerseFragment.newInstance(position + 1);
+                    break;
                 case 1:
-                    return TopicsFragment.newInstance();
+                    fragment = TopicsFragment.newInstance();
+                    break;
                 case 2:
-                    return SearchFragment.newInstance();
+                    fragment = SearchFragment.newInstance();
+                    break;
                 default:
-                    return VerseFragment.newInstance(position + 1);
+                    fragment = VerseFragment.newInstance(position + 1);
+                    break;
             }
+            return fragment;
+
         }
 
         @Override
