@@ -1,6 +1,7 @@
 package com.nearerToThee.view;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -11,17 +12,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.nearerToThee.R;
 import com.nearerToThee.controller.Controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class ReadDevotionActivity extends AppCompatActivity {
 
@@ -31,6 +37,15 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private String mFileName;
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
+    private Calendar mCalendar;
+    private int year;
+    private int month;
+    private int day;
+    private String displayed_date;
+    private ImageButton btnChangeDate;
+    private TextView tvDisplayDate;
+    private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
+    private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +69,9 @@ public class ReadDevotionActivity extends AppCompatActivity {
         wvReading.setBackgroundColor(Color.TRANSPARENT);
 
         setImage();
-        setText();
+        setDateOnView();
+
+        addListenerOnChangeDate();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
@@ -96,6 +113,78 @@ public class ReadDevotionActivity extends AppCompatActivity {
         //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
         mRootView.getBackground().setAlpha(75);
     }
+
+    // display current date both on the text view and the Date Picker when the application starts.
+    private void setDateOnView() {
+
+        //Use file name to extract date
+        String beforeFirstDot = mFileName.split("\\.")[0];
+        month = Integer.parseInt(beforeFirstDot.substring(0, 2))-1;
+        day = Integer.parseInt(beforeFirstDot.substring(2, 4));
+
+        //Get date. Also used by datepicker
+        mCalendar = Calendar.getInstance();
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, day);
+        year = mCalendar.get(Calendar.YEAR);
+
+        Date date = mCalendar.getTime();
+
+        displayed_date = displayDateFormatter.format(date);
+
+        //update displayed date
+        updateDisplayedDate();
+        setText();
+    }
+
+    private void updateDisplayedDate() {
+        tvDisplayDate = (TextView) findViewById(R.id.tvDisplayDate);
+        tvDisplayDate.setText(displayed_date);
+    }
+
+
+    public void addListenerOnChangeDate() {
+
+        btnChangeDate = (ImageButton) findViewById(R.id.calendarButton);
+
+        btnChangeDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ReadDevotionActivity.this,
+                        android.R.style.Theme_Holo_Dialog, datePickerListener,
+                        year, month, day);
+                datePickerDialog.show();
+            }
+
+        });
+
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+            Calendar c = Calendar.getInstance();
+            year = c.get(Calendar.YEAR);
+            month = selectedMonth;
+            day = selectedDay;
+            mCalendar.set(year, month, day);
+
+            Date date = mCalendar.getTime();
+
+            // get file Name from selected date
+            mFileName = fileNameFormatter.format(date).concat(".txt");
+            setText();
+
+            //update displayed date
+            displayed_date = displayDateFormatter.format(date);
+            updateDisplayedDate();
+        }
+    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
