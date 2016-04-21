@@ -71,6 +71,7 @@
         android:background="?attr/colorPrimary"
         android:layout_alignParentBottom="true"
         android:minHeight="?attr/actionBarSize"
+        android:theme="@style/AppToolbar"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"/>
 

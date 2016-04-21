@@ -189,6 +189,48 @@ public class ReadDevotionActivity extends AppCompatActivity {
         }
     };
 
+    public void loadPrevious() {
+
+        mCalendar.add(Calendar.DATE, -1);
+        Date date = mCalendar.getTime();
+
+        //update datepicker
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month= mCalendar.get(Calendar.MONTH);
+        day= mCalendar.get(Calendar.DAY_OF_MONTH);
+        //cal.set(year, month, day);
+
+        // get file Name from selected date
+        mFileName = fileNameFormatter.format(date).concat(".txt");
+        setText();
+
+        //update displayed date
+        displayed_date = displayDateFormatter.format(date);
+        updateDisplayedDate();
+
+    }
+
+    public void loadNext() {
+
+        mCalendar.add(Calendar.DATE, 1);
+        Date date = mCalendar.getTime();
+
+        //update datepicker
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month= mCalendar.get(Calendar.MONTH);
+        day= mCalendar.get(Calendar.DAY_OF_MONTH);
+        //cal.set(year, month, day);
+
+        // get file Name from selected date
+        mFileName = fileNameFormatter.format(date).concat(".txt");
+        setText();
+
+        //update displayed date
+        displayed_date = displayDateFormatter.format(date);
+        updateDisplayedDate();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,6 +258,12 @@ public class ReadDevotionActivity extends AppCompatActivity {
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
             startActivity(i);
+        }
+        if (id == R.id.action_previous) {
+            loadPrevious();
+        }
+        if (id == R.id.action_next) {
+            loadNext();
         }
 
         return super.onOptionsItemSelected(item);
