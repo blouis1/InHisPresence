@@ -1,5 +1,6 @@
 package com.nearerToThee.view;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -11,11 +12,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ActionMenuView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -46,6 +52,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private TextView tvDisplayDate;
     private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
     private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
+    private Toolbar toolbar_bottom;
 
 
     @Override
@@ -59,10 +66,25 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         toolbar.setTitle("NearerToThee");
+        setSupportActionBar(toolbar);
 
-        Toolbar toolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
+        toolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
         toolbar_bottom.setTitle("");
-        setSupportActionBar(toolbar_bottom);
+        setupEvenlyDistributedToolbar();
+        toolbar_bottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.action_previous) {
+                    loadPrevious();
+                }
+                if (id == R.id.action_next) {
+                    loadNext();
+                }
+                return onOptionsItemSelected(item);
+            }
+        });
+
 
         // Add up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -247,9 +269,9 @@ public class ReadDevotionActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
         if (id == android.R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
             return true;
@@ -259,14 +281,57 @@ public class ReadDevotionActivity extends AppCompatActivity {
             i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
             startActivity(i);
         }
-        if (id == R.id.action_previous) {
-            loadPrevious();
-        }
-        if (id == R.id.action_next) {
-            loadNext();
-        }
+
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @TargetApi(21)
+    public void setupEvenlyDistributedToolbar(){
+        // Use Display metrics to get Screen Dimensions
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+
+        // Toolbar
+        Toolbar mToolbar = toolbar_bottom;
+        // Inflate your menu
+        mToolbar.inflateMenu(R.menu.menu_bottom);
+
+        // Add 10 spacing on either side of the toolbar
+        mToolbar.setContentInsetsAbsolute(10, 10);
+
+        // Get the ChildCount of your Toolbar, this should only be 1
+        int childCount = mToolbar.getChildCount();
+        // Get the Screen Width in pixels
+        int screenWidth = metrics.widthPixels;
+
+        // Create the Toolbar Params based on the screenWidth
+        Toolbar.LayoutParams toolbarParams = new Toolbar.LayoutParams(screenWidth, android.widget.Toolbar.LayoutParams.WRAP_CONTENT);
+
+        // Loop through the child Items
+        for(int i = 0; i < childCount; i++){
+            // Get the item at the current index
+            View childView = mToolbar.getChildAt(i);
+            // If its a ViewGroup
+            if(childView instanceof ViewGroup){
+                // Set its layout params
+                childView.setLayoutParams(toolbarParams);
+                // Get the child count of this view group, and compute the item widths based on this count & screen size
+                int innerChildCount = ((ViewGroup) childView).getChildCount();
+                int itemWidth  = (screenWidth / innerChildCount);
+                // Create layout params for the ActionMenuView
+                ActionMenuView.LayoutParams params = new ActionMenuView.LayoutParams(itemWidth, ActionMenuView.LayoutParams.WRAP_CONTENT);
+                // Loop through the children
+                for(int j = 0; j < innerChildCount; j++){
+                    View grandChild = ((ViewGroup) childView).getChildAt(j);
+                    if(grandChild instanceof ActionMenuItemView){
+                        // set the layout parameters on each View
+                        grandChild.setLayoutParams(params);
+                    }
+                }
+            }
+        }
     }
 
 }
