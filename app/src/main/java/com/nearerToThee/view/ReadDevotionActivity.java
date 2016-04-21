@@ -47,6 +47,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
     private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,10 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_top);
         toolbar.setTitle("NearerToThee");
-        setSupportActionBar(toolbar);
+
+        Toolbar toolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
+        toolbar_bottom.setTitle("");
+        setSupportActionBar(toolbar_bottom);
 
         // Add up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -86,16 +86,16 @@ public class Controller {
                 id = R.drawable.clouds;
                 break;
             case 3: //Tue
-                id = R.drawable.sunset_grass;
+                id = R.drawable.footprints;
                 break;
             case 4: //Wed
                 id = R.drawable.flower;
                 break;
             case 5: //Thu
-                id = R.drawable.swan;
+                id = R.drawable.snowy_pier;
                 break;
             case 6: //Fri
-                id = R.drawable.daisy;
+                id = R.drawable.waterfall;
                 break;
             case 7: //Sat
                 id = R.drawable.clear_ocean;
