@@ -56,52 +56,13 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     // KEYWORD_TAGS Table - column names
     private static final String KEY_KEYWORD_ID = "keyword_id";
 
-
-    // Table Create Statements
-    // File table create statement
-    private static final String CREATE_TABLE_FILES = "CREATE TABLE "
-            + TABLE_FILES + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_FILE_NAME
-            + " TEXT," + KEY_FILE_TITLE + " TEXT," + KEY_FILE_IS_FAVORITE
-            + " INTEGER DEFAULT 0" + ")";
-
-    // Tag table create statement
-    private static final String CREATE_TABLE_TAGS = "CREATE TABLE " + TABLE_TAGS
-            + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TAG_NAME + " TEXT" + ")";
-
-    // todo_tag table create statement
-    private static final String CREATE_TABLE_FILE_TAGS = "CREATE TABLE "
-            + TABLE_FILES_TAGS + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + KEY_FILE_ID + " INTEGER," + KEY_TAG_ID + " INTEGER" + ")";
-
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /*
-     * Creating a file
+     * get single file
      */
-    public long createFile(File fileName, long[] tag_ids) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_FILE_NAME, fileName.getFileName());
-        values.put(KEY_FILE_TITLE, fileName.getFileTitle());
-        values.put(KEY_FILE_IS_FAVORITE, fileName.getIsFavorite());
-
-        // insert row
-        long file_id = db.insert(TABLE_FILES, null, values);
-
-        // assigning tags to fileName
-        for (long tag_id : tag_ids) {
-            createFileTag(file_id, tag_id);
-        }
-        db.close();
-        return file_id;
-    }
-
-    /*
- * get single file
- */
     public File getFile(long file_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -117,6 +78,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             if (cursor.moveToFirst()) {
                 file.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                 file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
+                file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
                 int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
                 file.setIsFavorite((isFavorite == 1) ? true : false);
             }
@@ -128,8 +90,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     }
 
     /*
- * getting all files
- * */
+     * getting all files
+     * */
     public List<File> getAllFiles() {
         List<File> files = new ArrayList<File>();
         String selectQuery = "SELECT  * FROM " + TABLE_FILES;
@@ -146,6 +108,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                     File file = new File();
                     file.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                     file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
+                    file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
                     int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
                     file.setIsFavorite((isFavorite == 1) ? true : false);
 
@@ -200,9 +163,45 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         db.close();
         return files;
     }
+
     /*
- * getting all files under single tag
- * */
+     * getting all files
+     * */
+    public ArrayList<File> getAllFavoriteFiles() {
+        ArrayList<File> files = new ArrayList<File>();
+        String selectQuery = "SELECT  * FROM " + TABLE_FILES + " WHERE " +
+                KEY_FILE_IS_FAVORITE + " = 1" ;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    File file = new File();
+                    file.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
+                    file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
+                    file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
+                    int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
+                    file.setIsFavorite((isFavorite == 1) ? true : false);
+
+                    // adding to file list
+                    files.add(file);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return files;
+    }
+
+    /*
+     * getting all files under single tag
+     * */
     public ArrayList<File> getAllFilesByTag(String tag_name) {
         ArrayList<File> files = new ArrayList<File>();
 
@@ -240,19 +239,25 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     }
 
     /*
- * Updating a file
- */
-    public int updateFile(File file) {
+     * Updating a file using fileName
+     * isFavorite : 1 -> true
+     *              0 -> false
+     */
+    public int updateFile(String fileName, int isFavorite) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        //values.put(KEY_FILE_NAME, file.getFileName());
-        //values.put(KEY_FILE_TITLE, file.getFileTitle());
-        values.put(KEY_FILE_IS_FAVORITE, file.getIsFavorite());
+        if (fileName == null || fileName.isEmpty()) {
+            throw new IllegalArgumentException("File name should not be null or empty");
+        }
 
-        // updating row
-        int rowsAffected = db.update(TABLE_FILES, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(file.getId())});
+        ContentValues valuesToInsert = new ContentValues();
+        valuesToInsert.put(KEY_FILE_IS_FAVORITE, isFavorite);
+
+        String where = KEY_FILE_NAME + " = ?";
+        String[] whereArgs = new String[]{ fileName };
+
+        int rowsAffected = db.update(TABLE_FILES, valuesToInsert, where, whereArgs);
+
         db.close();
         return rowsAffected;
     }

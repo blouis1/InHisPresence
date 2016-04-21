@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class FileListActivity extends AppCompatActivity {
 
     public final static String SELECTED_TAG = "com.nearerToThee.SELECTED_TAG";
+    public final static String FAVORITES = "com.nearerToThee.FAVORITES";
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     private DatabaseHelper dbHelper;
 
@@ -33,15 +34,24 @@ public class FileListActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_file_list);
 
+        String titleText = "";
+        ArrayList<File> fileList = new ArrayList<File>();
+        dbHelper = new DatabaseHelper(this.getApplicationContext());
         Intent intent = getIntent();
-        String selectedTagName = intent.getStringExtra(SELECTED_TAG);
+        if (intent.hasExtra(SELECTED_TAG)) {
+            String selectedTagName = intent.getStringExtra(SELECTED_TAG);
+            titleText = "Devotions about " + selectedTagName;
+            fileList = dbHelper.getAllFilesByTag(selectedTagName);
+        }
+        else if (intent.hasExtra(FAVORITES)) {
+            titleText = intent.getStringExtra(FAVORITES);
+            fileList = dbHelper.getAllFavoriteFiles();
+        }
 
         TextView tvSelectedTag = (TextView)findViewById(R.id.textView);
-        tvSelectedTag.setText("Devotions about " + selectedTagName);
+        tvSelectedTag.setText(titleText);
 
-        dbHelper = new DatabaseHelper(this.getApplicationContext());
-        ArrayList<File> fileListByTag = dbHelper.getAllFilesByTag(selectedTagName);
-        File[] fileArray = fileListByTag.toArray(new File[fileListByTag.size()]);
+        File[] fileArray = fileList.toArray(new File[fileList.size()]);
 
         FileArrayAdapter adapter = new FileArrayAdapter(this, R.layout.list_view_row_item, fileArray);
         // create a new ListView, set the adapter and item click listener
@@ -76,6 +86,7 @@ public class FileListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,12 +96,12 @@ public class FileListActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //here you can handle orientation change
     }
+
 
 }
 

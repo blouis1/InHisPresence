@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.nearerToThee.R;
 import com.nearerToThee.controller.Controller;
+import com.nearerToThee.data_access_layer.DatabaseHelper;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -43,6 +44,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private String mFileName;
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
+    public final static String FAVORITES = "com.nearerToThee.FAVORITES";
     private Calendar mCalendar;
     private int mYear;
     private int mMonth;
@@ -51,6 +53,8 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
     private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
     private Toolbar toolbar_bottom;
+    private DatabaseHelper dbHelper;
+
 
 
     @Override
@@ -58,6 +62,8 @@ public class ReadDevotionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_read_devotion);
+
+        dbHelper = new DatabaseHelper(this.getApplicationContext());
 
         Intent intent = getIntent();
         mFileName = intent.getStringExtra(FILE_NAME);
@@ -99,11 +105,20 @@ public class ReadDevotionActivity extends AppCompatActivity {
         addListenerOnChangeDate();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                String message = "";
+
+                //get file name and save to bookmarks
+                int rowsUpdated = dbHelper.updateFile(mFileName, 1);
+                if (rowsUpdated > 0) {
+                    message = "Added to favorites.";
+                }
+                else {
+                    message = "Could not add to favorites. Try again later.";
+                }
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -284,6 +299,11 @@ public class ReadDevotionActivity extends AppCompatActivity {
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
             startActivity(i);
+        }
+        if (id == R.id.action_favorite) {
+            Intent intent = new Intent(this, FileListActivity.class);
+            intent.putExtra(FAVORITES, "Your Favorites");
+            startActivity(intent);
         }
 
 

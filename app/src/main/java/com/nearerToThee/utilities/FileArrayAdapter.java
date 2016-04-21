@@ -47,9 +47,13 @@ public class FileArrayAdapter extends ArrayAdapter<File> {
 
         // object item based on the position
         File File = file[position];
+        long file_id = File.getId();
+        String title = File.getFileTitle();
+        boolean isfav = File.getIsFavorite();
 
         // get the TextView and then set the text (item name) and tag (item ID) values
         TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewItem);
+        String fileName = File.getFileTitle();
         textViewItem.setText(File.getFileTitle());
         textViewItem.setTag(File.getFileName());
 
