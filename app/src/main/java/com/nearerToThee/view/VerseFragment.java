@@ -2,8 +2,11 @@ package com.nearerToThee.view;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
@@ -54,11 +57,21 @@ public class VerseFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mRootView = inflater.inflate(R.layout.fragment_verse, container, false);
+        FloatingActionButton fab = (FloatingActionButton) mRootView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ReadDevotionActivity.class);
+                String fileName = mController.getTodaysFileName();
+                intent.putExtra(FILE_NAME, fileName);
+                startActivity(intent);
+            }
+        });
         //mController.initialize(this.getActivity().getApplicationContext());
         mController = Controller.getInstance();
 
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
-        mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
+        /*mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
         mRead.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ReadDevotionActivity.class);
@@ -66,7 +79,7 @@ public class VerseFragment extends Fragment {
                 intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
             }
-        });
+        });*/
         setImage();
         setVerse();
 

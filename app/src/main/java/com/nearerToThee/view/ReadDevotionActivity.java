@@ -44,12 +44,10 @@ public class ReadDevotionActivity extends AppCompatActivity {
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
     private Calendar mCalendar;
-    private int year;
-    private int month;
-    private int day;
-    private String displayed_date;
-    private ImageButton btnChangeDate;
-    private TextView tvDisplayDate;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private String mDisplayedDate;
     private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
     private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
     private Toolbar toolbar_bottom;
@@ -69,6 +67,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         toolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
+        toolbar_bottom.inflateMenu(R.menu.menu_bottom);
         toolbar_bottom.setTitle("");
         setupEvenlyDistributedToolbar();
         toolbar_bottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -145,18 +144,18 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
         //Use file name to extract date
         String beforeFirstDot = mFileName.split("\\.")[0];
-        month = Integer.parseInt(beforeFirstDot.substring(0, 2))-1;
-        day = Integer.parseInt(beforeFirstDot.substring(2, 4));
+        mMonth = Integer.parseInt(beforeFirstDot.substring(0, 2))-1;
+        mDay = Integer.parseInt(beforeFirstDot.substring(2, 4));
 
         //Get date. Also used by datepicker
         mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.MONTH, month);
-        mCalendar.set(Calendar.DAY_OF_MONTH, day);
-        year = mCalendar.get(Calendar.YEAR);
+        mCalendar.set(Calendar.MONTH, mMonth);
+        mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
+        mYear = mCalendar.get(Calendar.YEAR);
 
         Date date = mCalendar.getTime();
 
-        displayed_date = displayDateFormatter.format(date);
+        mDisplayedDate = displayDateFormatter.format(date);
 
         //update displayed date
         updateDisplayedDate();
@@ -164,14 +163,19 @@ public class ReadDevotionActivity extends AppCompatActivity {
     }
 
     private void updateDisplayedDate() {
-        tvDisplayDate = (TextView) findViewById(R.id.tvDisplayDate);
-        tvDisplayDate.setText(displayed_date);
+        TextView tvDisplayDate = (TextView) findViewById(R.id.tvDisplayDate);
+        tvDisplayDate.setText(mDisplayedDate);
+    }
+
+    // Used for testing
+    public void setDatePickerDate(Date date) {
+        mCalendar.setTime(date);
     }
 
 
     public void addListenerOnChangeDate() {
 
-        btnChangeDate = (ImageButton) findViewById(R.id.calendarButton);
+        ImageButton btnChangeDate = (ImageButton) findViewById(R.id.calendarButton);
 
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
 
@@ -180,7 +184,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ReadDevotionActivity.this,
                         android.R.style.Theme_Holo_Dialog, datePickerListener,
-                        year, month, day);
+                        mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
 
@@ -194,10 +198,10 @@ public class ReadDevotionActivity extends AppCompatActivity {
         // when dialog box is closed, below method will be called.
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
             Calendar c = Calendar.getInstance();
-            year = c.get(Calendar.YEAR);
-            month = selectedMonth;
-            day = selectedDay;
-            mCalendar.set(year, month, day);
+            mYear = c.get(Calendar.YEAR);
+            mMonth = selectedMonth;
+            mDay = selectedDay;
+            mCalendar.set(mYear, mMonth, mDay);
 
             Date date = mCalendar.getTime();
 
@@ -206,7 +210,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
             setText();
 
             //update displayed date
-            displayed_date = displayDateFormatter.format(date);
+            mDisplayedDate = displayDateFormatter.format(date);
             updateDisplayedDate();
         }
     };
@@ -217,17 +221,17 @@ public class ReadDevotionActivity extends AppCompatActivity {
         Date date = mCalendar.getTime();
 
         //update datepicker
-        year = Calendar.getInstance().get(Calendar.YEAR);
-        month= mCalendar.get(Calendar.MONTH);
-        day= mCalendar.get(Calendar.DAY_OF_MONTH);
-        //cal.set(year, month, day);
+        mYear = Calendar.getInstance().get(Calendar.YEAR);
+        mMonth = mCalendar.get(Calendar.MONTH);
+        mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
+        //cal.set(mYear, mMonth, mDay);
 
         // get file Name from selected date
         mFileName = fileNameFormatter.format(date).concat(".txt");
         setText();
 
         //update displayed date
-        displayed_date = displayDateFormatter.format(date);
+        mDisplayedDate = displayDateFormatter.format(date);
         updateDisplayedDate();
 
     }
@@ -238,17 +242,17 @@ public class ReadDevotionActivity extends AppCompatActivity {
         Date date = mCalendar.getTime();
 
         //update datepicker
-        year = Calendar.getInstance().get(Calendar.YEAR);
-        month= mCalendar.get(Calendar.MONTH);
-        day= mCalendar.get(Calendar.DAY_OF_MONTH);
-        //cal.set(year, month, day);
+        mYear = Calendar.getInstance().get(Calendar.YEAR);
+        mMonth = mCalendar.get(Calendar.MONTH);
+        mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
+        //cal.set(mYear, mMonth, mDay);
 
         // get file Name from selected date
         mFileName = fileNameFormatter.format(date).concat(".txt");
         setText();
 
         //update displayed date
-        displayed_date = displayDateFormatter.format(date);
+        mDisplayedDate = displayDateFormatter.format(date);
         updateDisplayedDate();
 
     }
@@ -296,7 +300,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         // Toolbar
         Toolbar mToolbar = toolbar_bottom;
         // Inflate your menu
-        mToolbar.inflateMenu(R.menu.menu_bottom);
+        //mToolbar.inflateMenu(R.menu.menu_bottom);
 
         // Add 10 spacing on either side of the toolbar
         mToolbar.setContentInsetsAbsolute(10, 10);

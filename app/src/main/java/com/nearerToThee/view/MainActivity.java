@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Controller mController;
     public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
 
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -78,18 +79,6 @@ public class MainActivity extends AppCompatActivity {
         if (fragmentName != null && fragmentName.equals(fragmentName)) {
             mViewPager.setCurrentItem(2);
         }
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        //fab.setImageResource(R.drawable.ic_launch_black_24dp);
-        fab.setVisibility(View.GONE);
-        fab.setBackgroundColor(Color.TRANSPARENT);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
     }
 
