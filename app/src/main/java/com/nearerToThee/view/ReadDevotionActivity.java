@@ -296,9 +296,10 @@ public class ReadDevotionActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_search) {
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
+            Intent i = new Intent(this, SearchActivity.class);
+            //i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
             startActivity(i);
+            //onSearchRequested();
         }
         if (id == R.id.action_favorite) {
             Intent intent = new Intent(this, FileListActivity.class);
