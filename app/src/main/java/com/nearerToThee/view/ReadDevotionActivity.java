@@ -76,7 +76,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         toolbar.setTitle("NearerToThee");
         setSupportActionBar(toolbar);
 
-        mToolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
+        /*mToolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
         mToolbar_bottom.inflateMenu(R.menu.menu_bottom);
         mToolbar_bottom.setTitle("");
         setupEvenlyDistributedToolbar();
@@ -92,7 +92,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
                 }
                 return onOptionsItemSelected(item);
             }
-        });
+        });*/
 
 
         // Add up button
@@ -104,6 +104,21 @@ public class ReadDevotionActivity extends AppCompatActivity {
         wvReading.setBackgroundColor(Color.TRANSPARENT);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fabPrevious = (FloatingActionButton) findViewById(R.id.fabPrevious);
+        FloatingActionButton fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
+        fabPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadPrevious();
+            }
+        });
+
+        fabNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadNext();
+            }
+        });
 
         setImage();
         setDateOnView();
