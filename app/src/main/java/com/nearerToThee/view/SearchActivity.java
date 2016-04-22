@@ -142,7 +142,12 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra(FILE_NAME, file.getFileName());
                 startActivity(intent);
             }
-        });
+
+            @Override
+            public void onDelete(String fileName) {
+                // do nothing
+            }
+        }, false);
         recyclerView.setAdapter(adapter);
         // create a new ListView, set the adapter and item click listener
 

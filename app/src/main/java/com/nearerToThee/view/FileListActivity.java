@@ -3,14 +3,20 @@ package com.nearerToThee.view;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nearerToThee.R;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
@@ -25,6 +31,8 @@ public class FileListActivity extends AppCompatActivity {
     public final static String FAVORITES = "com.nearerToThee.FAVORITES";
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     private DatabaseHelper dbHelper;
+    private boolean mShowRemoveButton;
+    private RVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,7 @@ public class FileListActivity extends AppCompatActivity {
         // Add up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv);
+        final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv);
         TextView emptyView = (TextView) findViewById(R.id.empty_view);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
@@ -50,10 +58,12 @@ public class FileListActivity extends AppCompatActivity {
             String selectedTagName = intent.getStringExtra(SELECTED_TAG);
             titleText = "Devotions about " + selectedTagName;
             fileList = dbHelper.getAllFilesByTag(selectedTagName);
+            mShowRemoveButton = false;
         }
         else if (intent.hasExtra(FAVORITES)) {
             titleText = intent.getStringExtra(FAVORITES);
             fileList = dbHelper.getAllFavoriteFiles();
+            mShowRemoveButton = true;
         }
 
         if (fileList.isEmpty()) {
@@ -67,14 +77,24 @@ public class FileListActivity extends AppCompatActivity {
         TextView tvSelectedTag = (TextView)findViewById(R.id.textView);
         tvSelectedTag.setText(titleText);
 
-        RVAdapter adapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
+        adapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
             @Override public void onItemClick(File file) {
                 //Toast.makeText(FileListActivity.this.getApplicationContext(), "Item Clicked: " + file.getFileName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FileListActivity.this, ReadDevotionActivity.class);
                 intent.putExtra(FILE_NAME, file.getFileName());
                 startActivity(intent);
             }
-        });
+
+            @Override
+            public void onDelete(String fileName) {
+                //Toast.makeText(FileListActivity.this.getApplicationContext(), "Item Removed: " + fileName, Toast.LENGTH_SHORT).show();
+                int rowsUpdated = FileListActivity.this.dbHelper.updateFile(fileName, 0);
+                if (rowsUpdated < 0) {
+                    String message = "Item may already be deleted from favorites. Try again later.";
+                    Toast.makeText(FileListActivity.this.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, mShowRemoveButton);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -86,4 +106,43 @@ public class FileListActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         //here you can handle orientation change
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        if (id == R.id.action_search) {
+            Intent i = new Intent(this, SearchActivity.class);
+            //i.putExtra(SEARCH_FRAGMENT, "FavoritesFragment");
+            startActivity(i);
+            //onSearchRequested();
+        }
+        if (id == R.id.action_favorite) {
+            Intent intent = new Intent(this, FileListActivity.class);
+            intent.putExtra(FAVORITES, "Your Favorites");
+            startActivity(intent);
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
