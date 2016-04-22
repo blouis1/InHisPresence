@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import com.nearerToThee.controller.Controller;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,7 +109,6 @@ public class ReadDevotionActivity extends AppCompatActivity {
         setDateOnView();
 
         addListenerOnChangeDate();
-
 
         //mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#990000"))); //changes color of mFab button to red
         mFab.setRippleColor(Color.parseColor("#7f0000"));
@@ -223,9 +224,30 @@ public class ReadDevotionActivity extends AppCompatActivity {
                         android.R.style.Theme_Holo_Dialog, datePickerListener,
                         mYear, mMonth, mDay);
                 datePickerDialog.show();
+                DatePicker dp = findDatePicker((ViewGroup) datePickerDialog.getWindow().getDecorView());
+                if (dp != null) {
+                    ((ViewGroup) ((ViewGroup) dp.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+                }
             }
 
         });
+
+    }
+
+    private DatePicker findDatePicker(ViewGroup group) {
+        if (group != null) {
+            for (int i = 0, j = group.getChildCount(); i < j; i++) {
+                View child = group.getChildAt(i);
+                if (child instanceof DatePicker) {
+                    return (DatePicker) child;
+                } else if (child instanceof ViewGroup) {
+                    DatePicker result = findDatePicker((ViewGroup) child);
+                    if (result != null)
+                        return result;
+                }
+            }
+        }
+        return null;
 
     }
 
