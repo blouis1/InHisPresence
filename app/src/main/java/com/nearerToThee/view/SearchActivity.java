@@ -66,7 +66,6 @@ public class SearchActivity extends AppCompatActivity {
         searchBox = (AutoCompleteTextView) findViewById(R.id.autocomplete_keywords);
 
         recyclerView = (RecyclerView)findViewById(R.id.rv);
-        TextView emptyView = (TextView) findViewById(R.id.empty_view);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
@@ -157,20 +156,5 @@ public class SearchActivity extends AppCompatActivity {
         }
 
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-
-        SearchManager searchManager = (SearchManager)
-                getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchActionBarItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchActionBarItem);
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
-        searchView.setSearchableInfo(searchableInfo);
-        searchView.setIconifiedByDefault(false);
-        return true;
-    }*/
 
 }

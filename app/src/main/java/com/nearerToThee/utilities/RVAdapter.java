@@ -1,5 +1,6 @@
 package com.nearerToThee.utilities;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -70,9 +71,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FileViewHolder>{
         public void bind(final File file, final OnItemClickListener listener) {
             fileTitle.setText(file.getFileTitle());
             isFavorite.setImageResource(R.drawable.ic_action_favorite);
+            boolean isfav = file.getIsFavorite();
+            if (file.getIsFavorite() == true) {
+                int color = Color.parseColor("#b20000");
+                isFavorite.setColorFilter(color);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(file);
                 }
             });

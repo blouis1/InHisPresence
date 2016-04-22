@@ -89,6 +89,28 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return file;
     }
 
+    public boolean getIsFavorite(String fileName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_FILES + " WHERE "
+                + KEY_FILE_NAME + " = '" + fileName + "'";
+
+        Log.e(LOG, selectQuery);
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
+                return (isFavorite == 1);
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return false;
+    }
+
     /*
      * getting all files
      * */
@@ -131,7 +153,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             return files;
         }
 
-        String selectQuery = "SELECT f." + KEY_ID + ", f." + KEY_FILE_NAME + ", f." + KEY_FILE_TITLE
+        String selectQuery = "SELECT f." + KEY_ID + ", f." + KEY_FILE_NAME + ", f." + KEY_FILE_TITLE + ", f." + KEY_FILE_IS_FAVORITE
                 + " FROM " + TABLE_KEYWORDS + " k"
                 + " JOIN " + TABLE_KEYWORD_TAGS + " kt ON kt." + KEY_KEYWORD_ID + " = k." + KEY_ID
                 + " JOIN " + TABLE_TAGS + " t ON t." + KEY_ID + " = kt." + KEY_TAG_ID
@@ -153,6 +175,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                     file.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                     file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
                     file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
+                    file.setIsFavorite(cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE))==1);
+
                     // adding to file list
                     files.add(file);
                 } while (cursor.moveToNext());
@@ -186,7 +210,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                     file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
                     file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
                     int isFavorite = cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE));
-                    file.setIsFavorite((isFavorite == 1) ? true : false);
+                    file.setIsFavorite((isFavorite == 1));
 
                     // adding to file list
                     files.add(file);

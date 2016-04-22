@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,8 +53,9 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private String mDisplayedDate;
     private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
     private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
-    private Toolbar toolbar_bottom;
-    private DatabaseHelper dbHelper;
+    private Toolbar mToolbar_bottom;
+    private DatabaseHelper mDbHelper;
+    private FloatingActionButton mFab;
 
 
 
@@ -63,7 +65,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_read_devotion);
 
-        dbHelper = new DatabaseHelper(this.getApplicationContext());
+        mDbHelper = new DatabaseHelper(this.getApplicationContext());
 
         Intent intent = getIntent();
         mFileName = intent.getStringExtra(FILE_NAME);
@@ -72,11 +74,11 @@ public class ReadDevotionActivity extends AppCompatActivity {
         toolbar.setTitle("NearerToThee");
         setSupportActionBar(toolbar);
 
-        toolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
-        toolbar_bottom.inflateMenu(R.menu.menu_bottom);
-        toolbar_bottom.setTitle("");
+        mToolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
+        mToolbar_bottom.inflateMenu(R.menu.menu_bottom);
+        mToolbar_bottom.setTitle("");
         setupEvenlyDistributedToolbar();
-        toolbar_bottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        mToolbar_bottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
@@ -99,23 +101,28 @@ public class ReadDevotionActivity extends AppCompatActivity {
         wvReading = (WebView) this.findViewById(R.id.wvReading);
         wvReading.setBackgroundColor(Color.TRANSPARENT);
 
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+
         setImage();
         setDateOnView();
 
         addListenerOnChangeDate();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        //mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#990000"))); //changes color of mFab button to red
+        mFab.setRippleColor(Color.parseColor("#7f0000"));
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String message = "";
 
                 //get file name and save to bookmarks
-                int rowsUpdated = dbHelper.updateFile(mFileName, 1);
+                int rowsUpdated = mDbHelper.updateFile(mFileName, 1);
                 if (rowsUpdated > 0) {
                     message = "Added to favorites.";
-                }
-                else {
+                    int color = Color.parseColor("#b20000");
+                    mFab.setColorFilter(color);
+                } else {
                     message = "Could not add to favorites. Try again later.";
                 }
                 Snackbar.make(view, message, Snackbar.LENGTH_LONG)
@@ -124,6 +131,18 @@ public class ReadDevotionActivity extends AppCompatActivity {
         });
     }
 
+    public void setColorOfFloatingActionButton() {
+        //TOdo change to fileName variable
+        boolean isFavorite = mDbHelper.getIsFavorite("0418.txt");
+        //TODO change to isFavorite variable
+        if (mFileName.equals("0418.txt")) {
+            int color = Color.parseColor("#b20000");
+            mFab.setColorFilter(color);
+        } else {
+            int color = Color.parseColor("#ffffff");
+            mFab.setColorFilter(color);
+        }
+    }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -131,6 +150,9 @@ public class ReadDevotionActivity extends AppCompatActivity {
     }
 
     public void setText() {
+
+        setColorOfFloatingActionButton();
+
         try {
             String head = "<head><style>@font-face {font-family: 'Gabriela-Regular';src: url('file:///android_asset/fonts/Gabriela-Regular.ttf');}" +
                     "@font-face {font-family: 'Junge-Regular';src: url('file:///android_asset/fonts/Junge-Regular.ttf');}" +
@@ -319,7 +341,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         display.getMetrics(metrics);
 
         // Toolbar
-        Toolbar mToolbar = toolbar_bottom;
+        Toolbar mToolbar = mToolbar_bottom;
         // Inflate your menu
         //mToolbar.inflateMenu(R.menu.menu_bottom);
 
