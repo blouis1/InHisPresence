@@ -3,10 +3,8 @@ package com.nearerToThee.view;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -15,8 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.nearerToThee.R;
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private Controller mController;
-    public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
+    public final static String FAVORITES = "com.nearerToThee.FAVORITES";
 
 
     /**
@@ -52,18 +50,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mController.initialize(this.getApplicationContext());
-        Intent i = getIntent();
-        String fragmentName = i.getStringExtra(SEARCH_FRAGMENT);
+
         FragmentManager manager = getSupportFragmentManager();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //To show launcher icon in appbar
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-        //getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        //toolbar.setVisibility(View.GONE);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -75,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        if (fragmentName != null && fragmentName.equals(fragmentName)) {
-            mViewPager.setCurrentItem(2);
-        }
 
     }
 
@@ -124,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     fragment = TopicsFragment.newInstance();
                     break;
-                case 2:
-                    fragment = SearchFragment.newInstance();
-                    break;
                 default:
                     fragment = VerseFragment.newInstance(position + 1);
                     break;
@@ -138,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -149,10 +133,46 @@ public class MainActivity extends AppCompatActivity {
                     return "Today".toUpperCase(locale);
                 case 1:
                     return "Topics".toUpperCase(locale);
-                case 2:
-                    return "Search".toUpperCase(locale);
             }
             return null;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        if (id == R.id.action_search) {
+            Intent i = new Intent(this, SearchActivity.class);
+            //i.putExtra(SEARCH_FRAGMENT, "FavoritesFragment");
+            startActivity(i);
+            //onSearchRequested();
+        }
+        if (id == R.id.action_favorite) {
+            Intent intent = new Intent(this, FileListActivity.class);
+            intent.putExtra(FAVORITES, "Your Favorites");
+            startActivity(intent);
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

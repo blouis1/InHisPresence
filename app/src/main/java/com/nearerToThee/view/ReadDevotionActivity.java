@@ -297,7 +297,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         }
         if (id == R.id.action_search) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra(SEARCH_FRAGMENT, "SearchFragment");
+            //i.putExtra(SEARCH_FRAGMENT, "FavoritesFragment");
             startActivity(i);
             //onSearchRequested();
         }

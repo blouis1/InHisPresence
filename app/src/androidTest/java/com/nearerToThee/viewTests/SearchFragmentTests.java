@@ -1,6 +1,5 @@
 package com.nearerToThee.viewTests;
 
-import android.app.Instrumentation;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
@@ -9,19 +8,15 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.nearerToThee.R;
-import com.nearerToThee.view.FileListActivity;
 import com.nearerToThee.view.MainActivity;
-import com.nearerToThee.view.ReadDevotionActivity;
-import com.nearerToThee.view.SearchFragment;
 
 /**
  * Created by Betsy on 4/19/2016.
  */
 public class SearchFragmentTests extends ActivityInstrumentationTestCase2<MainActivity> {
-    private SearchFragment searchFragment;
+    private FavoritesFragment searchFragment;
     private MainActivity m_activity;
     private ViewPager mViewPager;
     private MainActivity.SectionsPagerAdapter fragmentPagerAdapter;
@@ -43,7 +38,7 @@ public class SearchFragmentTests extends ActivityInstrumentationTestCase2<MainAc
         fragmentPagerAdapter = (MainActivity.SectionsPagerAdapter) mViewPager.getAdapter();
         mTabLayout = (TabLayout) m_activity.findViewById(R.id.tabs);
         selectTab(2);
-        searchFragment = (SearchFragment) fragmentPagerAdapter.getCurrentFragment();
+        searchFragment = (FavoritesFragment) fragmentPagerAdapter.getCurrentFragment();
         mSearchBox = (AutoCompleteTextView) m_activity.findViewById(R.id.autocomplete_keywords);
         mSearchButton = (Button) m_activity.findViewById(R.id.btnSearch);
         mListView = (ListView) m_activity.findViewById(R.id.lvSearchResults);

@@ -7,7 +7,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.nearerToThee.view.VerseFragment;
 import com.nearerToThee.view.MainActivity;
 import com.nearerToThee.R;
-import com.nearerToThee.view.SearchFragment;
 import com.nearerToThee.view.TopicsFragment;
 
 
@@ -81,7 +80,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
 
     public void testThirdTabOpensSearchFragment() {
         selectTab(2);
-        assertTrue(fragmentPagerAdapter.getCurrentFragment() instanceof SearchFragment);
+        assertTrue(fragmentPagerAdapter.getCurrentFragment() instanceof FavoritesFragment);
     }
 
     public void testSecondTabOpensTopicsFragment() {

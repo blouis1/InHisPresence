@@ -1,15 +1,11 @@
 package com.nearerToThee.viewTests;
 
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.TouchUtils;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nearerToThee.R;
-import com.nearerToThee.view.FileListActivity;
-import com.nearerToThee.view.ReadDevotionActivity;
 
 /**
  * Created by Betsy on 4/19/2016.

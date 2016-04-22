@@ -5,19 +5,17 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nearerToThee.R;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 import com.nearerToThee.model.File;
-import com.nearerToThee.utilities.FileArrayAdapter;
+import com.nearerToThee.utilities.RVAdapter;
 
 import java.util.ArrayList;
 
@@ -33,6 +31,16 @@ public class FileListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_file_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("NearerToThee");
+        setSupportActionBar(toolbar);
+        // Add up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv);
+        TextView emptyView = (TextView) findViewById(R.id.empty_view);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(llm);
 
         String titleText = "";
         ArrayList<File> fileList = new ArrayList<File>();
@@ -48,52 +56,29 @@ public class FileListActivity extends AppCompatActivity {
             fileList = dbHelper.getAllFavoriteFiles();
         }
 
+        if (fileList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
+
         TextView tvSelectedTag = (TextView)findViewById(R.id.textView);
         tvSelectedTag.setText(titleText);
 
-        File[] fileArray = fileList.toArray(new File[fileList.size()]);
-
-        FileArrayAdapter adapter = new FileArrayAdapter(this, R.layout.list_view_row_item, fileArray);
-        // create a new ListView, set the adapter and item click listener
-        ListView listViewItems = (ListView) findViewById(R.id.listview);
-        listViewItems.setAdapter(adapter);
-        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                TextView textViewItem = ((TextView) v.findViewById(R.id.textViewItem));
-
-                // get the clicked item name
-                String listItemText = textViewItem.getText().toString();
-
-                // get the clicked item name
-                String listItemName = textViewItem.getTag().toString();
-
-                // just toast it
-                Toast.makeText(getApplicationContext(), "Title: " + listItemText + ", File Name: " + listItemName, Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(getApplicationContext(), ReadDevotionActivity.class);
-                intent.putExtra(FILE_NAME, listItemName);
+        RVAdapter adapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
+            @Override public void onItemClick(File file) {
+                //Toast.makeText(FileListActivity.this.getApplicationContext(), "Item Clicked: " + file.getFileName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FileListActivity.this, ReadDevotionActivity.class);
+                intent.putExtra(FILE_NAME, file.getFileName());
                 startActivity(intent);
-
-
             }
         });
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("NearerToThee");
-        setSupportActionBar(toolbar);
-        // Add up button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -101,9 +86,4 @@ public class FileListActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         //here you can handle orientation change
     }
-
-
 }
-
-
-

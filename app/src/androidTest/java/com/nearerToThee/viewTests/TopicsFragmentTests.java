@@ -4,14 +4,10 @@ import android.app.Instrumentation;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.TouchUtils;
-import android.view.View;
 import android.widget.GridView;
 
 import com.nearerToThee.R;
-import com.nearerToThee.view.FileListActivity;
 import com.nearerToThee.view.MainActivity;
-import com.nearerToThee.view.ReadDevotionActivity;
 import com.nearerToThee.view.TopicsFragment;
 
 /**
