@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/isfavorite"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:layout_marginRight="16dp"
                 />
 
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/file_title"
                 android:layout_toRightOf="@+id/isfavorite"
-                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:textColor="#fff"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 />
