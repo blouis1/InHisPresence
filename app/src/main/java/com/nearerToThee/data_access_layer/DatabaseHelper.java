@@ -154,6 +154,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 + " FROM " + TABLE_KEYWORDS + " k"
                 + " JOIN " + TABLE_KEYWORD_TAGS + " kt ON kt." + KEY_KEYWORD_ID + " = k." + KEY_ID
                 + " JOIN " + TABLE_TAGS + " t ON t." + KEY_ID + " = kt." + KEY_TAG_ID
+                + " JOIN " + TABLE_FILES + " f ON f." + KEY_TAG_ID + " = t." + KEY_ID
                 + " WHERE k." + KEY_KEYWORD_NAME + " LIKE  \"%" + keyword + "%\""
                 + " GROUP BY f." + KEY_FILE_NAME;
 
@@ -171,7 +172,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                     file.setFileName((cursor.getString(cursor.getColumnIndex(KEY_FILE_NAME))));
                     file.setFileTitle((cursor.getString(cursor.getColumnIndex(KEY_FILE_TITLE))));
                     file.setIsFavorite(cursor.getInt(cursor.getColumnIndex(KEY_FILE_IS_FAVORITE))==1);
-
+                    file.setFileTagId(cursor.getInt(cursor.getColumnIndex(KEY_TAG_ID)));
                     // adding to file list
                     files.add(file);
                 } while (cursor.moveToNext());
@@ -189,7 +190,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     public ArrayList<File> getAllFavoriteFiles() {
         ArrayList<File> files = new ArrayList<File>();
         String selectQuery = "SELECT  * FROM " + TABLE_FILES + " WHERE " +
-                KEY_FILE_IS_FAVORITE + " = 1" ;
+                KEY_FILE_IS_FAVORITE + " = 1";
 
         Log.e(LOG, selectQuery);
 
