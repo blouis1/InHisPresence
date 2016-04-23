@@ -44,11 +44,4 @@ public class AssetReaderTests extends ActivityInstrumentationTestCase2<MainActiv
         assertEquals(expectedText.length(), readerText.length());
     }
 
-    // test the random generator gets a random file each time
-    public void testGetRandomFile() throws IOException {
-        DeterministicRandom randomGenerator = new DeterministicRandom();
-        assertTrue(reader.getRandomFile(randomGenerator, "testFiles").equals("file01.txt"));
-        assertTrue(reader.getRandomFile(randomGenerator, "testFiles").equals("unitTest.txt"));
-    }
-
 }

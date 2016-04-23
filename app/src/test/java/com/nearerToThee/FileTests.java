@@ -44,4 +44,10 @@ public class FileTests {
         assertEquals(true, file.getIsFavorite());
     }
 
+    @Test
+    public void testFileTag() {
+        file.setFileTagId(200);
+        assertEquals(200, file.getFileTagId());
+    }
+
 }

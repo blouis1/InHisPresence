@@ -31,24 +31,20 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     // Table Names
     private static final String TABLE_FILES = "files";
     private static final String TABLE_TAGS = "tags";
-    private static final String TABLE_FILES_TAGS = "file_tags";
     private static final String TABLE_KEYWORDS = "keywords";
     private static final String TABLE_KEYWORD_TAGS = "keyword_tags";
 
     // Common column names
     private static final String KEY_ID = "_id";
 
-    // FILES Table - column nmaes
+    // FILES Table - column names
     private static final String KEY_FILE_NAME = "file_name";
     private static final String KEY_FILE_TITLE = "title";
     private static final String KEY_FILE_IS_FAVORITE = "is_favorite";
+    private static final String KEY_TAG_ID = "tag_id";
 
     // TAGS Table - column names
     private static final String KEY_TAG_NAME = "tag_name";
-
-    // FILE_TAGS Table - column names
-    private static final String KEY_FILE_ID = "file_id";
-    private static final String KEY_TAG_ID = "tag_id";
 
     // KEYWORDS Table - column names
     private static final String KEY_KEYWORD_NAME = "keyword";
@@ -153,12 +149,11 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             return files;
         }
 
-        String selectQuery = "SELECT f." + KEY_ID + ", f." + KEY_FILE_NAME + ", f." + KEY_FILE_TITLE + ", f." + KEY_FILE_IS_FAVORITE
+        String selectQuery = "SELECT f." + KEY_ID + ", f." + KEY_FILE_NAME + ", f." + KEY_FILE_TITLE + ", f."
+                + KEY_FILE_IS_FAVORITE + ", f." + KEY_TAG_ID
                 + " FROM " + TABLE_KEYWORDS + " k"
                 + " JOIN " + TABLE_KEYWORD_TAGS + " kt ON kt." + KEY_KEYWORD_ID + " = k." + KEY_ID
                 + " JOIN " + TABLE_TAGS + " t ON t." + KEY_ID + " = kt." + KEY_TAG_ID
-                + " JOIN " + TABLE_FILES_TAGS + " ft ON ft." + KEY_TAG_ID + " = t." + KEY_ID
-                + " JOIN " + TABLE_FILES + " f ON f." + KEY_ID + " = ft." + KEY_FILE_ID
                 + " WHERE k." + KEY_KEYWORD_NAME + " LIKE  \"%" + keyword + "%\""
                 + " GROUP BY f." + KEY_FILE_NAME;
 
@@ -229,11 +224,10 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     public ArrayList<File> getAllFilesByTag(String tag_name) {
         ArrayList<File> files = new ArrayList<File>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_FILES + " td, "
-                + TABLE_TAGS + " tg, " + TABLE_FILES_TAGS + " tt WHERE tg."
-                + KEY_TAG_NAME + " = '" + tag_name + "'" + " AND tg." + KEY_ID
-                + " = " + "tt." + KEY_TAG_ID + " AND td." + KEY_ID + " = "
-                + "tt." + KEY_FILE_ID;
+        String selectQuery = "SELECT  * FROM " + TABLE_FILES + " tf, "
+                + TABLE_TAGS + " tt WHERE tt."
+                + KEY_TAG_NAME + " = '" + tag_name + "'" + " AND tf." + KEY_TAG_ID + " = "
+                + "tt." + KEY_ID;
 
         Log.e(LOG, selectQuery);
 
@@ -284,21 +278,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
         db.close();
         return rowsAffected;
-    }
-
-    /*
-     * Creating tag
-     */
-    public long createTag(Tag tag) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_TAG_NAME, tag.getTagName());
-
-        // insert row
-        long tag_id = db.insert(TABLE_TAGS, null, values);
-        db.close();
-        return tag_id;
     }
 
     /**
@@ -358,48 +337,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     }
 
     /*
-     * Deleting a tag
+     * Updating a file tag
      */
-    public void deleteTag(Tag tag, boolean should_delete_all_tag_todos) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // before deleting tag
-        // check if todos under this tag should also be deleted
-        //if (should_delete_all_tag_todos) {
-        // get all todos under this tag
-        //List<File> allTagFiles = getAllFilesByTag(tag.getTagName());
-
-        // delete all todos
-        //for (File file : allTagFiles) {
-        // delete file
-        //deleteFiles(file.getId());
-        //}
-        //}
-
-        // now delete the tag
-        db.delete(TABLE_TAGS, KEY_ID + " = ?",
-                new String[]{String.valueOf(tag.getId())});
-        db.close();
-    }
-
-    /*
-     * Creating file_tag
-     */
-    public long createFileTag(long todo_id, long tag_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_FILE_ID, todo_id);
-        values.put(KEY_TAG_ID, tag_id);
-
-        long id = db.insert(TABLE_FILES_TAGS, null, values);
-        db.close();
-        return id;
-    }
-
-    /*
- * Updating a file tag
- */
     public int updateFileTag(long id, long tag_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 

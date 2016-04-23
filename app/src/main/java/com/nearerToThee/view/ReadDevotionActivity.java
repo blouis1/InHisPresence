@@ -76,25 +76,6 @@ public class ReadDevotionActivity extends AppCompatActivity {
         toolbar.setTitle("NearerToThee");
         setSupportActionBar(toolbar);
 
-        /*mToolbar_bottom = (Toolbar) findViewById(R.id.toolbar_bottom);
-        mToolbar_bottom.inflateMenu(R.menu.menu_bottom);
-        mToolbar_bottom.setTitle("");
-        setupEvenlyDistributedToolbar();
-        mToolbar_bottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.action_previous) {
-                    loadPrevious();
-                }
-                if (id == R.id.action_next) {
-                    loadNext();
-                }
-                return onOptionsItemSelected(item);
-            }
-        });*/
-
-
         // Add up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -105,7 +86,9 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton fabPrevious = (FloatingActionButton) findViewById(R.id.fabPrevious);
+        //fabPrevious.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#cccccc"))); //changes color of mFab button to grey
         FloatingActionButton fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
+        //fabNext.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#cccccc"))); //changes color of mFab button to grey
         fabPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,28 +113,27 @@ public class ReadDevotionActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String message = "";
 
                 //get file name and save to bookmarks
                 int rowsUpdated = mDbHelper.updateFile(mFileName, 1);
                 if (rowsUpdated > 0) {
-                    message = "Added to favorites.";
                     int color = Color.parseColor("#b20000");
                     mFab.setColorFilter(color);
                 } else {
-                    message = "Could not add to favorites. Try again later.";
+                    String message = "Could not add to favorites. Try again later.";
+                    Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
     }
 
     public void setColorOfFloatingActionButton() {
-        //TOdo change to fileName variable
-        boolean isFavorite = mDbHelper.getIsFavorite("0418.txt");
-        //TODO change to isFavorite variable
-        if (mFileName.equals("0418.txt")) {
+
+        boolean isFavorite = mDbHelper.getIsFavorite(mFileName);
+
+        if (isFavorite) {
             int color = Color.parseColor("#b20000");
             mFab.setColorFilter(color);
         } else {
@@ -159,6 +141,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
             mFab.setColorFilter(color);
         }
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -368,54 +351,6 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @TargetApi(21)
-    public void setupEvenlyDistributedToolbar(){
-        // Use Display metrics to get Screen Dimensions
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics metrics = new DisplayMetrics();
-        display.getMetrics(metrics);
-
-        // Toolbar
-        Toolbar mToolbar = mToolbar_bottom;
-        // Inflate your menu
-        //mToolbar.inflateMenu(R.menu.menu_bottom);
-
-        // Add 10 spacing on either side of the toolbar
-        mToolbar.setContentInsetsAbsolute(10, 10);
-
-        // Get the ChildCount of your Toolbar, this should only be 1
-        int childCount = mToolbar.getChildCount();
-        // Get the Screen Width in pixels
-        int screenWidth = metrics.widthPixels;
-
-        // Create the Toolbar Params based on the screenWidth
-        Toolbar.LayoutParams toolbarParams = new Toolbar.LayoutParams(screenWidth, android.widget.Toolbar.LayoutParams.WRAP_CONTENT);
-
-        // Loop through the child Items
-        for(int i = 0; i < childCount; i++){
-            // Get the item at the current index
-            View childView = mToolbar.getChildAt(i);
-            // If its a ViewGroup
-            if(childView instanceof ViewGroup){
-                // Set its layout params
-                childView.setLayoutParams(toolbarParams);
-                // Get the child count of this view group, and compute the item widths based on this count & screen size
-                int innerChildCount = ((ViewGroup) childView).getChildCount();
-                int itemWidth  = (screenWidth / innerChildCount);
-                // Create layout params for the ActionMenuView
-                ActionMenuView.LayoutParams params = new ActionMenuView.LayoutParams(itemWidth, ActionMenuView.LayoutParams.WRAP_CONTENT);
-                // Loop through the children
-                for(int j = 0; j < innerChildCount; j++){
-                    View grandChild = ((ViewGroup) childView).getChildAt(j);
-                    if(grandChild instanceof ActionMenuItemView){
-                        // set the layout parameters on each View
-                        grandChild.setLayoutParams(params);
-                    }
-                }
-            }
-        }
     }
 
 }

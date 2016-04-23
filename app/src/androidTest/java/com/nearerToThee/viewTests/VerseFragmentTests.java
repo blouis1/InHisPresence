@@ -1,6 +1,7 @@
 package com.nearerToThee.viewTests;
 
 import android.app.Instrumentation;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
@@ -24,7 +25,7 @@ public class VerseFragmentTests extends ActivityInstrumentationTestCase2<MainAct
     private MainActivity.SectionsPagerAdapter fragmentPagerAdapter;
     private View mRootView;
     private TextView mVerse;
-    private ImageButton mRead;
+    private FloatingActionButton mRead;
 
     public VerseFragmentTests()
     {
@@ -40,7 +41,7 @@ public class VerseFragmentTests extends ActivityInstrumentationTestCase2<MainAct
         VerseFragment devotionFragment = (VerseFragment) fragmentPagerAdapter.getCurrentFragment();
         mRootView = devotionFragment.getView().getRootView();
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
-        mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
+        mRead = (FloatingActionButton) mRootView.findViewById(R.id.fab);
     }
 
     public void testFragmentIsNotNull() {
@@ -51,7 +52,7 @@ public class VerseFragmentTests extends ActivityInstrumentationTestCase2<MainAct
         assertTrue(mVerse.getVisibility() == View.VISIBLE);
     }
 
-    public void testImageButtonIsEnabled() {
+    public void testFloatingButtonIsEnabled() {
         assertTrue(mRead.isEnabled());
     }
 

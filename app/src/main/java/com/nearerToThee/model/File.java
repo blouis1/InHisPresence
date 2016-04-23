@@ -9,6 +9,7 @@ public class File {
     String fileName;
     String fileTitle;
     boolean isFavorite;
+    int fileTagId;
 
     // constructors
     public File() {
@@ -31,6 +32,11 @@ public class File {
         this.isFavorite = isFavorite;
     }
 
+    public void setFileTagId(int tag_id) {
+        this.fileTagId = tag_id;
+    }
+
+
     // getters
     public long getId() {
         return this.id;
@@ -44,5 +50,9 @@ public class File {
 
     public boolean getIsFavorite() {
         return this.isFavorite;
+    }
+
+    public int getFileTagId() {
+        return this.fileTagId;
     }
 }
