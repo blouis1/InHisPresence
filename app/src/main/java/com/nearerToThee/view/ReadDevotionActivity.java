@@ -224,6 +224,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
                 datePickerDialog.show();
                 DatePicker dp = findDatePicker((ViewGroup) datePickerDialog.getWindow().getDecorView());
                 if (dp != null) {
+                    dp.setCalendarViewShown(false);
                     ((ViewGroup) ((ViewGroup) dp.getChildAt(0)).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
                 }
             }
