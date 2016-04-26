@@ -128,17 +128,18 @@ public class ReadDevotionActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String message = "";
                 //get file name and save to bookmarks
                 int rowsUpdated = mDbHelper.updateFile(mFileName, 1);
                 if (rowsUpdated > 0) {
                     int color = Color.parseColor("#b20000");
                     mFab.setColorFilter(color);
+                    message = "Added to favorites.";
                 } else {
-                    String message = "Could not add to favorites. Try again later.";
-                    Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    message = "Could not add to favorites. Try again later.";
                 }
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
 
             }
         });
