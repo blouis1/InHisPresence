@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:padding="2dp">
+    >
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cv"
-        card_view:cardElevation="15dp"
+        card_view:cardElevation="5dp"
         card_view:cardCornerRadius="4dp"
-        card_view:cardBackgroundColor="@color/fab_color"
+        card_view:cardUseCompatPadding="true"
         >
 
         <RelativeLayout
@@ -35,7 +35,7 @@
                 android:id="@+id/file_title"
                 android:layout_toRightOf="@+id/isfavorite"
                 android:layout_centerInParent="true"
-                android:textColor="#fff"
+                android:textColor="#000"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 />
 

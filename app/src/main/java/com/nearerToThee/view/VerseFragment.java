@@ -106,7 +106,14 @@ public class VerseFragment extends Fragment {
     public void setImage() {
         int id = mController.getImageForTheDay();
         mRootView.setBackgroundResource(id);
-        //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
+        // Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
         mRootView.getBackground().setAlpha(255);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRootView.getBackground().setAlpha(255);
+    }
+
 }

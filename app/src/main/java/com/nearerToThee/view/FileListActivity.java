@@ -15,10 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearerToThee.R;
+import com.nearerToThee.controller.Controller;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 import com.nearerToThee.model.File;
 import com.nearerToThee.utilities.RVAdapter;
@@ -33,12 +35,19 @@ public class FileListActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private boolean mShowRemoveButton;
     private RVAdapter adapter;
+    private Controller mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_file_list);
+        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.rootLayout);
+        mController = Controller.getInstance();
+        rootView.setBackgroundResource(mController.getImageForTheDay());
+        //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
+        rootView.getBackground().setAlpha(75);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("NearerToThee");
         setSupportActionBar(toolbar);

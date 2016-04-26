@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearerToThee.R;
+import com.nearerToThee.controller.Controller;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 import com.nearerToThee.model.File;
 import com.nearerToThee.utilities.RVAdapter;
@@ -40,6 +41,7 @@ public class SearchActivity extends AppCompatActivity {
     private TextView tvNoResults;
     private ArrayAdapter<String> adapter;
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
+    private Controller mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,10 @@ public class SearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         View rootView = (RelativeLayout) findViewById(R.id.rootLayout);
+        mController = Controller.getInstance();
+        rootView.setBackgroundResource(mController.getImageForTheDay());
+        //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
+        rootView.getBackground().setAlpha(75);
         searchBox = (AutoCompleteTextView) findViewById(R.id.autocomplete_keywords);
 
         recyclerView = (RecyclerView)findViewById(R.id.rv);

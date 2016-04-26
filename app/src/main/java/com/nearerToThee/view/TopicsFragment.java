@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nearerToThee.R;
+import com.nearerToThee.controller.Controller;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 import com.nearerToThee.model.Tag;
 
@@ -26,6 +27,8 @@ public class TopicsFragment extends Fragment {
 
     private DatabaseHelper dbHelper;
     public final static String SELECTED_TAG = "com.nearerToThee.SELECTED_TAG";
+    private Controller mController;
+    private View mRootView;
 
     public TopicsFragment() {
     }
@@ -43,12 +46,14 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_topics, container, false);
+        mController = Controller.getInstance();
+        mRootView.setBackgroundResource(mController.getImageForTheDay());
 
         dbHelper = new DatabaseHelper(this.getActivity().getApplicationContext());
         ArrayList<Tag> tagList = dbHelper.getAllTags();
 
-        GridView gridview = (GridView) rootView.findViewById(R.id.gridViewCustom);
+        GridView gridview = (GridView) mRootView.findViewById(R.id.gridViewCustom);
         gridview.setAdapter(new TextViewAdapter(getActivity(), tagList));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -63,8 +68,22 @@ public class TopicsFragment extends Fragment {
             }
         });
 
-        return rootView;
+        return mRootView;
     }
+
+    /*@Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            mRootView.getBackground().setAlpha(75);
+            if (!isVisibleToUser) {
+                //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
+                mRootView.getBackground().setAlpha(255);
+            }
+        }
+    } */
 
     public class TextViewAdapter extends BaseAdapter {
         private Context context;

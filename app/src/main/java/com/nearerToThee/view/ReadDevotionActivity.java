@@ -83,9 +83,24 @@ public class ReadDevotionActivity extends AppCompatActivity {
         mRootView = this.findViewById(R.id.rootLayout);
         wvReading = (WebView) this.findViewById(R.id.wvReading);
         wvReading.setBackgroundColor(Color.TRANSPARENT);
+        ImageButton previous = (ImageButton) findViewById(R.id.action_previous);
+        ImageButton next = (ImageButton) findViewById(R.id.action_next);
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadPrevious();
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadNext();
+            }
+        });
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
-        FloatingActionButton fabPrevious = (FloatingActionButton) findViewById(R.id.fabPrevious);
+        /*FloatingActionButton fabPrevious = (FloatingActionButton) findViewById(R.id.fabPrevious);
         //fabPrevious.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#cccccc"))); //changes color of mFab button to grey
         FloatingActionButton fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
         //fabNext.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#cccccc"))); //changes color of mFab button to grey
@@ -101,7 +116,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 loadNext();
             }
-        });
+        }); */
 
         setImage();
         setDateOnView();

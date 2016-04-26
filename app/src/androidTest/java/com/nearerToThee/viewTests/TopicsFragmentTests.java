@@ -57,8 +57,8 @@ public class TopicsFragmentTests extends ActivityInstrumentationTestCase2<MainAc
         assertNotNull(mGridview);
     }
 
-    public void testGridViewHasItems() {
-        assertTrue(mGridview.getAdapter().getCount() > 0);
+    public void testGridViewHas12Items() {
+        assertTrue(mGridview.getAdapter().getCount() == 12);
     }
 
     public void testClickingGridViewItemOpensActivity() {
