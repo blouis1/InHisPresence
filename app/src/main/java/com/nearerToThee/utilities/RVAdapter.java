@@ -95,6 +95,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FileViewHolder>{
             if (file.getIsFavorite() == true) {
                 int color = Color.parseColor("#b20000");
                 isFavorite.setColorFilter(color);
+            } else {
+                int color = Color.parseColor("#ffffff");
+                isFavorite.setColorFilter(color);
             }
 
             removeFavorite.setOnClickListener(new View.OnClickListener() {
