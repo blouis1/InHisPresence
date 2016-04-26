@@ -31,7 +31,9 @@ public class Devotion {
      */
     public String getVerse() {
         // read from file to get verse
-        this.verse = patternMatcher.getStringBetweenTags(fileContent, "<aside>(.+)</aside>");
+        String title = patternMatcher.getStringBetweenTags(fileContent, "<h1>(.+)</h1>");
+        String verse = patternMatcher.getStringBetweenTags(fileContent, "<aside>(.+)</aside>");
+        this.verse = "<h1>" + title + "</h1>" + verse;
         return this.verse;
     }
 
