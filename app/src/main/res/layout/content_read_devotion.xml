@@ -72,15 +72,34 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/action_previous"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:src="@drawable/ic_action_previous_item"
+            android:layout_alignTop="@+id/tvDisplayDate"
+            android:layout_alignParentLeft="true"
+            android:background="@color/translucent_black"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/action_next"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/ic_action_next_item"
+            android:layout_alignTop="@+id/tvDisplayDate"
+            android:layout_alignParentRight="true"
+            android:background="@color/translucent_black"/>
 
 
-        <android.support.design.widget.FloatingActionButton
+        <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/fabPrevious"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:fabSize="mini"
-            app:layout_anchor="@id/wvReading"
+            app:layout_anchor="@id/tvDisplayDate"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/fab_margin"
             android:src="@drawable/ic_action_previous_item" />
@@ -91,11 +110,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:fabSize="mini"
-            app:layout_anchor="@id/wvReading"
+            app:layout_anchor="@id/tvDisplayDate"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/fab_margin"
             android:src="@drawable/ic_action_next_item"
-            />
+            />-->
 
     </RelativeLayout>
 

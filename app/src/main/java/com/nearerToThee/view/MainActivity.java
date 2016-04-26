@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -73,6 +74,17 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //here you can handle orientation change
+    }
+
+    // send the user back to the main page from topics page on back button press
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mViewPager.getCurrentItem() == 1) {
+            mViewPager.setCurrentItem(0, true);
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
 
