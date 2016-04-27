@@ -80,10 +80,10 @@ public class Controller {
         switch(day_of_week) {
 
             case 1: //Sun
-                id = R.drawable.clear_ocean;
+                id = R.drawable.starfish;
                 break;
             case 2: //Mon
-                id = R.drawable.starfish;
+                id = R.drawable.beach;
                 break;
             case 3: //Tue
                 id = R.drawable.sunset_ocean;
