@@ -2,14 +2,11 @@ package com.nearerToThee.view;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +19,9 @@ import com.nearerToThee.controller.Controller;
 import java.io.IOException;
 
 /**
- * A placeholder fragment containing a simple view.
+ * A fragment containing the verse for the day.
  */
 public class VerseFragment extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    //private static final String ARG_SECTION_NUMBER = "section_number";
 
     private View mRootView;
     private Controller mController;
@@ -46,9 +38,6 @@ public class VerseFragment extends Fragment {
      */
     public static VerseFragment newInstance(int sectionNumber) {
         VerseFragment fragment = new VerseFragment();
-        //Bundle args = new Bundle();
-        //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -67,19 +56,10 @@ public class VerseFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        //mController.initialize(this.getActivity().getApplicationContext());
         mController = Controller.getInstance();
 
         mVerse = (TextView) mRootView.findViewById(R.id.tvVerse);
-        /*mRead = (ImageButton)mRootView.findViewById(R.id.ibRead);
-        mRead.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ReadDevotionActivity.class);
-                String fileName = mController.getTodaysFileName();
-                intent.putExtra(FILE_NAME, fileName);
-                startActivity(intent);
-            }
-        });*/
+
         setImage();
         setVerse();
 

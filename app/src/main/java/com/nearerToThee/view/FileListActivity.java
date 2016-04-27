@@ -3,10 +3,8 @@ package com.nearerToThee.view;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,9 +30,9 @@ public class FileListActivity extends AppCompatActivity {
     public final static String SELECTED_TAG = "com.nearerToThee.SELECTED_TAG";
     public final static String FAVORITES = "com.nearerToThee.FAVORITES";
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
-    private DatabaseHelper dbHelper;
+    private DatabaseHelper mDbHelper;
     private boolean mShowRemoveButton;
-    private RVAdapter adapter;
+    private RVAdapter mAdapter;
     private Controller mController;
 
     @Override
@@ -61,17 +59,17 @@ public class FileListActivity extends AppCompatActivity {
 
         String titleText = "";
         ArrayList<File> fileList = new ArrayList<File>();
-        dbHelper = new DatabaseHelper(this.getApplicationContext());
+        mDbHelper = new DatabaseHelper(this.getApplicationContext());
         Intent intent = getIntent();
         if (intent.hasExtra(SELECTED_TAG)) {
             String selectedTagName = intent.getStringExtra(SELECTED_TAG);
             titleText = "Devotions about " + selectedTagName;
-            fileList = dbHelper.getAllFilesByTag(selectedTagName);
+            fileList = mDbHelper.getAllFilesByTag(selectedTagName);
             mShowRemoveButton = false;
         }
         else if (intent.hasExtra(FAVORITES)) {
             titleText = intent.getStringExtra(FAVORITES);
-            fileList = dbHelper.getAllFavoriteFiles();
+            fileList = mDbHelper.getAllFavoriteFiles();
             mShowRemoveButton = true;
         }
 
@@ -86,7 +84,7 @@ public class FileListActivity extends AppCompatActivity {
         TextView tvSelectedTag = (TextView)findViewById(R.id.textView);
         tvSelectedTag.setText(titleText);
 
-        adapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
+        mAdapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
             @Override public void onItemClick(File file) {
                 //Toast.makeText(FileListActivity.this.getApplicationContext(), "Item Clicked: " + file.getFileName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FileListActivity.this, ReadDevotionActivity.class);
@@ -97,14 +95,14 @@ public class FileListActivity extends AppCompatActivity {
             @Override
             public void onDelete(String fileName) {
                 //Toast.makeText(FileListActivity.this.getApplicationContext(), "Item Removed: " + fileName, Toast.LENGTH_SHORT).show();
-                int rowsUpdated = FileListActivity.this.dbHelper.updateFile(fileName, 0);
+                int rowsUpdated = FileListActivity.this.mDbHelper.updateFile(fileName, 0);
                 if (rowsUpdated < 0) {
                     String message = "Item may already be deleted from favorites. Try again later.";
                     Toast.makeText(FileListActivity.this.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             }
         }, mShowRemoveButton);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);

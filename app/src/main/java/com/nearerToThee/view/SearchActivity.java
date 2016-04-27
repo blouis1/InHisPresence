@@ -34,12 +34,12 @@ import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private DatabaseHelper dbHelper;
-    private AutoCompleteTextView searchBox;
-    private RecyclerView recyclerView;
-    private Button searchButton;
-    private TextView tvNoResults;
-    private ArrayAdapter<String> adapter;
+    private DatabaseHelper mDbHelper;
+    private AutoCompleteTextView mSearchBox;
+    private RecyclerView mRecyclerView;
+    private Button mSearchButton;
+    private TextView mTvNoResults;
+    private ArrayAdapter<String> mAdapter;
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     private Controller mController;
 
@@ -69,19 +69,19 @@ public class SearchActivity extends AppCompatActivity {
         rootView.setBackgroundResource(mController.getImageForTheDay());
         //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
         rootView.getBackground().setAlpha(75);
-        searchBox = (AutoCompleteTextView) findViewById(R.id.autocomplete_keywords);
+        mSearchBox = (AutoCompleteTextView) findViewById(R.id.autocomplete_keywords);
 
-        recyclerView = (RecyclerView)findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llm);
+        mRecyclerView.setLayoutManager(llm);
 
-        tvNoResults = (TextView) findViewById(android.R.id.empty);
+        mTvNoResults = (TextView) findViewById(android.R.id.empty);
 
-        dbHelper = new DatabaseHelper(this.getApplicationContext());
-        searchButton = (Button)rootView.findViewById(R.id.btnSearch);
-        searchButton.setEnabled(false);
+        mDbHelper = new DatabaseHelper(this.getApplicationContext());
+        mSearchButton = (Button)rootView.findViewById(R.id.btnSearch);
+        mSearchButton.setEnabled(false);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performSearch();
@@ -89,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // to show enter key on keyboard
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -99,7 +99,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        searchBox.addTextChangedListener(new TextWatcher() {
+        mSearchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -107,10 +107,10 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (searchBox.getText().toString().trim().length()==0) {
-                    recyclerView.setAdapter(null);
+                if (mSearchBox.getText().toString().trim().length() == 0) {
+                    mRecyclerView.setAdapter(null);
                 }
-                searchButton.setEnabled(searchBox.getText().toString().trim().length()!=0);
+                mSearchButton.setEnabled(mSearchBox.getText().toString().trim().length() != 0);
             }
 
             @Override
@@ -120,11 +120,11 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // Get the string array of keywords
-        ArrayList<String> keywordList = dbHelper.getAllKeywords();
+        ArrayList<String> keywordList = mDbHelper.getAllKeywords();
         String[] keywords = keywordList.toArray(new String[keywordList.size()]);
-        // Create the adapter and set it to the AutoCompleteTextView
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, keywords);
-        searchBox.setAdapter(adapter);
+        // Create the mAdapter and set it to the AutoCompleteTextView
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, keywords);
+        mSearchBox.setAdapter(mAdapter);
     }
 
     @Override
@@ -134,16 +134,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void performSearch() {
-        String keyword = searchBox.getText().toString();
-        searchBox.clearFocus();
+        String keyword = mSearchBox.getText().toString();
+        mSearchBox.clearFocus();
         InputMethodManager in = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        in.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+        in.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
 
-        ArrayList<File> fileListByTag = dbHelper.getFilesFromKeyword(keyword);
+        ArrayList<File> fileListByTag = mDbHelper.getFilesFromKeyword(keyword);
 
         RVAdapter adapter = new RVAdapter(fileListByTag, new RVAdapter.OnItemClickListener() {
             @Override public void onItemClick(File file) {
-                //Toast.makeText(SearchActivity.this.getApplicationContext(), "Item Clicked", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(SearchActivity.this, ReadDevotionActivity.class);
                 intent.putExtra(FILE_NAME, file.getFileName());
                 startActivity(intent);
@@ -154,16 +153,15 @@ public class SearchActivity extends AppCompatActivity {
                 // do nothing
             }
         }, false);
-        recyclerView.setAdapter(adapter);
-        // create a new ListView, set the adapter and item click listener
 
-        recyclerView.setAdapter(adapter);
-        if (recyclerView.getAdapter().getItemCount() == 0) {
+        mRecyclerView.setAdapter(adapter);
+
+        if (mRecyclerView.getAdapter().getItemCount() == 0) {
             Toast.makeText(this.getApplicationContext(), "No devotions available for that keyword", Toast.LENGTH_SHORT).show();
-            tvNoResults.setVisibility(View.VISIBLE);
+            mTvNoResults.setVisibility(View.VISIBLE);
         }
         else {
-            tvNoResults.setVisibility(View.GONE);
+            mTvNoResults.setVisibility(View.GONE);
         }
 
     }

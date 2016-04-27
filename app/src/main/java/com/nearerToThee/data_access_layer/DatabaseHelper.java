@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.nearerToThee.model.File;
 import com.nearerToThee.model.Tag;
@@ -18,9 +17,6 @@ import java.util.List;
  * Created by Betsy on 2/17/2016.
  */
 public class DatabaseHelper extends SQLiteAssetHelper {
-
-    // Logcat tag
-    private static final String LOG = "DatabaseHelper";
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -65,8 +61,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_FILES + " WHERE "
                 + KEY_ID + " = " + file_id;
 
-        Log.e(LOG, selectQuery);
-
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         File file = new File();
@@ -91,8 +85,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_FILES + " WHERE "
                 + KEY_FILE_NAME + " = '" + fileName + "'";
 
-        Log.e(LOG, selectQuery);
-
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor != null) {
@@ -113,8 +105,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     public List<File> getAllFiles() {
         List<File> files = new ArrayList<File>();
         String selectQuery = "SELECT  * FROM " + TABLE_FILES;
-
-        Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -158,8 +148,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 + " WHERE k." + KEY_KEYWORD_NAME + " LIKE  \"%" + keyword + "%\""
                 + " GROUP BY f." + KEY_FILE_NAME;
 
-        Log.e(LOG, selectQuery);
-
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -191,8 +179,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         ArrayList<File> files = new ArrayList<File>();
         String selectQuery = "SELECT  * FROM " + TABLE_FILES + " WHERE " +
                 KEY_FILE_IS_FAVORITE + " = 1";
-
-        Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -229,8 +215,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 + TABLE_TAGS + " tt WHERE tt."
                 + KEY_TAG_NAME + " = '" + tag_name + "'" + " AND tf." + KEY_TAG_ID + " = "
                 + "tt." + KEY_ID;
-
-        Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -288,8 +272,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         ArrayList<Tag> tags = new ArrayList<Tag>();
         String selectQuery = "SELECT  * FROM " + TABLE_TAGS;
 
-        Log.e(LOG, selectQuery);
-
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -317,8 +299,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     public ArrayList<String> getAllKeywords() {
         ArrayList<String> keywords = new ArrayList<String>();
         String selectQuery = "SELECT  * FROM " + TABLE_KEYWORDS;
-
-        Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

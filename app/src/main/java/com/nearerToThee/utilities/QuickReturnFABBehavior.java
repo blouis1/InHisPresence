@@ -16,7 +16,7 @@ import android.view.animation.Interpolator;
 import java.util.List;
 
 /**
- * CoordinatorLayout Behavior for a quick return footer
+ * CoordinatorLayout Behavior for a quick return floating action button
  *
  * When a nested ScrollView is scrolled down, the quick return view will disappear.
  * When the ScrollView is scrolled back up, the quick return view will reappear.

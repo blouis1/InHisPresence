@@ -17,7 +17,7 @@ import java.util.Locale;
  */
 public class Controller {
 
-    private AssetReader assetReader;
+    private AssetReader mAssetReader;
     private static Controller instance = null;
     private static Context mContext;
 
@@ -38,7 +38,7 @@ public class Controller {
      * The private constructor. Here you can use the context to initialize your variables.
      */
     private Controller()  {
-        assetReader = new AssetReader(mContext);
+        mAssetReader = new AssetReader(mContext);
     }
 
     public static synchronized Controller getInstance()  {
@@ -66,7 +66,7 @@ public class Controller {
     }
 
     public String readFromFile(String fileName) throws IOException{
-        return assetReader.readFromAssetsFile(fileName, "devotions");
+        return mAssetReader.readFromAssetsFile(fileName, "devotions");
     }
 
     public String getReading(String fileName) throws IOException {

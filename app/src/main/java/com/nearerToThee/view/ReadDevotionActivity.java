@@ -1,11 +1,9 @@
 package com.nearerToThee.view;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,17 +11,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.ActionMenuView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,7 +26,6 @@ import com.nearerToThee.controller.Controller;
 import com.nearerToThee.data_access_layer.DatabaseHelper;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +38,6 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private WebView wvReading;
     private String mFileName;
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
-    public final static String SEARCH_FRAGMENT = "com.nearerToThee.SEARCH_FRAGMENT";
     public final static String FAVORITES = "com.nearerToThee.FAVORITES";
     private Calendar mCalendar;
     private int mYear;
@@ -55,7 +46,6 @@ public class ReadDevotionActivity extends AppCompatActivity {
     private String mDisplayedDate;
     private SimpleDateFormat displayDateFormatter = new SimpleDateFormat("MMM d, yyyy", Locale.US);
     private SimpleDateFormat fileNameFormatter = new SimpleDateFormat("MMdd",Locale.US);
-    private Toolbar mToolbar_bottom;
     private DatabaseHelper mDbHelper;
     private FloatingActionButton mFab;
 
@@ -345,9 +335,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
         }
         if (id == R.id.action_search) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra(SEARCH_FRAGMENT, "FavoritesFragment");
             startActivity(i);
-            //onSearchRequested();
         }
         if (id == R.id.action_favorite) {
             Intent intent = new Intent(this, FileListActivity.class);

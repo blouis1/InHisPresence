@@ -1,34 +1,29 @@
 package com.nearerToThee.utilities;
 
 import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nearerToThee.R;
-import com.nearerToThee.data_access_layer.DatabaseHelper;
 import com.nearerToThee.model.File;
-import com.nearerToThee.view.FileListActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
+ * RecyclerView adapter class.
  * Created by Betsy on 4/22/2016.
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FileViewHolder>{
 
-    private ArrayList<File> files;
-    private OnItemClickListener listener;
-    private boolean showButton;
+    private ArrayList<File> mFiles;
+    private OnItemClickListener mListener;
+    private boolean mShowButton;
 
     public interface OnItemClickListener {
         void onItemClick(File item);
@@ -36,21 +31,21 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FileViewHolder>{
     }
 
     public RVAdapter(ArrayList<File> fileList, OnItemClickListener listener, boolean showButton){
-        this.files = fileList;
-        this.listener = listener;
-        this.showButton = showButton;
+        this.mFiles = fileList;
+        this.mListener = listener;
+        this.mShowButton = showButton;
     }
 
     @Override
     public int getItemCount() {
-        return files.size();
+        return mFiles.size();
     }
 
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
         FileViewHolder pvh = new FileViewHolder(v);
-        if (!showButton) {
+        if (!mShowButton) {
             pvh.removeFavorite.setVisibility(View.GONE);
         }
         return pvh;
@@ -58,8 +53,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FileViewHolder>{
 
     @Override
     public void onBindViewHolder(FileViewHolder fileViewHolder, int position) {
-        fileViewHolder.bind(files.get(position), listener);
-        //fileViewHolder.isFavorite.setImageResource(R.drawable.ic_action_favorite);
+        fileViewHolder.bind(mFiles.get(position), mListener);
     }
 
     @Override
@@ -68,9 +62,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FileViewHolder>{
     }
 
     public void delete(int position) { //removes the row
-        files.remove(position);
+        mFiles.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, files.size());
+        notifyItemRangeChanged(position, mFiles.size());
     }
 
     public class FileViewHolder extends RecyclerView.ViewHolder {
