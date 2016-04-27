@@ -4,12 +4,16 @@ package com.nearerToThee.utilities;
 import android.animation.Animator;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.Interpolator;
+
+import java.util.List;
 
 /**
  * CoordinatorLayout Behavior for a quick return footer
@@ -19,24 +23,52 @@ import android.view.animation.Interpolator;
  *
  */
 @SuppressWarnings("unused")
-public class QuickReturnFooterBehavior extends CoordinatorLayout.Behavior<View> {
+public class QuickReturnFABBehavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
     private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
 
     private int mDySinceDirectionChange;
     private boolean mIsShowing;
     private boolean mIsHiding;
 
-    public QuickReturnFooterBehavior(Context context, AttributeSet attrs) {
+    public QuickReturnFABBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, int nestedScrollAxes) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+        float translationY = Math.min(0, dependency.getTranslationY() - dependency.getHeight());
+        child.setTranslationY(translationY);
+        return true;
+    }
+
+    private float getFabTranslationYForSnackbar(CoordinatorLayout parent,
+                                                View fab) {
+        float minOffset = 0;
+        final List<View> dependencies = parent.getDependencies(fab);
+        for (int i = 0, z = dependencies.size(); i < z; i++) {
+            final View view = dependencies.get(i);
+            if (view instanceof Snackbar.SnackbarLayout && parent.doViewsOverlap(fab, view)) {
+                minOffset = Math.min(minOffset,
+                        ViewCompat.getTranslationY(view) - view.getHeight());
+            }
+        }
+
+        return minOffset;
+    }
+
+    @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton  child, View dependency) {
+        //return super.layoutDependsOn(parent, child, dependency);
+        return dependency instanceof Snackbar.SnackbarLayout;
+    }
+
+    @Override
+    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton  child, View directTargetChild, View target, int nestedScrollAxes) {
         return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
     @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed) {
+    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dx, int dy, int[] consumed) {
         if (dy > 0 && mDySinceDirectionChange < 0
                 || dy < 0 && mDySinceDirectionChange > 0) {
             // We detected a direction change- cancel existing animations and reset our cumulative delta Y

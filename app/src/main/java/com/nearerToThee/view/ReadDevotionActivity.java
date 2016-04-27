@@ -100,23 +100,6 @@ public class ReadDevotionActivity extends AppCompatActivity {
         });
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
-        /*FloatingActionButton fabPrevious = (FloatingActionButton) findViewById(R.id.fabPrevious);
-        //fabPrevious.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#cccccc"))); //changes color of mFab button to grey
-        FloatingActionButton fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
-        //fabNext.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#cccccc"))); //changes color of mFab button to grey
-        fabPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadPrevious();
-            }
-        });
-
-        fabNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadNext();
-            }
-        }); */
 
         setImage();
         setDateOnView();
@@ -143,6 +126,12 @@ public class ReadDevotionActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setColorOfFloatingActionButton();
     }
 
     public void setColorOfFloatingActionButton() {
