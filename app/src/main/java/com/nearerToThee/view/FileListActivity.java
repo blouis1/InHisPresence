@@ -32,8 +32,8 @@ public class FileListActivity extends AppCompatActivity {
     public final static String FILE_NAME = "com.nearerToThee.FILE_NAME";
     private DatabaseHelper mDbHelper;
     private boolean mShowRemoveButton;
-    private RVAdapter mAdapter;
-    private Controller mController;
+    private int mLastFirstVisiblePosition;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,8 @@ public class FileListActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_file_list);
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.rootLayout);
-        mController = Controller.getInstance();
-        rootView.setBackgroundResource(mController.getImageForTheDay());
+        Controller controller = Controller.getInstance();
+        rootView.setBackgroundResource(controller.getImageForTheDay());
         //	Alpha Values 0-255, 0 means fully transparent, and 255 means fully opaque
         rootView.getBackground().setAlpha(75);
 
@@ -51,11 +51,18 @@ public class FileListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Add up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        loadRecyclerView();
 
-        final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+    }
+
+    public void loadRecyclerView() {
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv);
         TextView emptyView = (TextView) findViewById(R.id.empty_view);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llm);
+        mRecyclerView.setLayoutManager(llm);
 
         String titleText = "";
         ArrayList<File> fileList = new ArrayList<File>();
@@ -74,17 +81,17 @@ public class FileListActivity extends AppCompatActivity {
         }
 
         if (fileList.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
-            recyclerView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
 
         TextView tvSelectedTag = (TextView)findViewById(R.id.textView);
         tvSelectedTag.setText(titleText);
 
-        mAdapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
+        RVAdapter adapter = new RVAdapter(fileList, new RVAdapter.OnItemClickListener() {
             @Override public void onItemClick(File file) {
                 //Toast.makeText(FileListActivity.this.getApplicationContext(), "Item Clicked: " + file.getFileName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FileListActivity.this, ReadDevotionActivity.class);
@@ -102,10 +109,23 @@ public class FileListActivity extends AppCompatActivity {
                 }
             }
         }, mShowRemoveButton);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+    @Override
+    public void onPause() {
+        super.onPause();
+        // save scroll position
+        mLastFirstVisiblePosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // reload recyclerview to refresh favorites status of files
+        loadRecyclerView();
+        // set scroll position
+        ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPosition(mLastFirstVisiblePosition);
     }
 
     @Override

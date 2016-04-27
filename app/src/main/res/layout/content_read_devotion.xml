@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="bottom|right|end"
-        android:src="@drawable/ic_action_favorite"
+        android:src="@drawable/ic_action_add_favorite"
         app:fabSize="mini"
         app:layout_behavior="com.nearerToThee.utilities.QuickReturnFABBehavior"
         />

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -105,6 +106,7 @@ public class ReadDevotionActivity extends AppCompatActivity {
                 //get file name and save to bookmarks
                 int rowsUpdated = mDbHelper.updateFile(mFileName, 1);
                 if (rowsUpdated > 0) {
+                    mFab.setImageResource(R.drawable.ic_action_favorite);
                     int color = Color.parseColor("#b20000");
                     mFab.setColorFilter(color);
                     message = "Added to favorites.";
@@ -129,9 +131,11 @@ public class ReadDevotionActivity extends AppCompatActivity {
         boolean isFavorite = mDbHelper.getIsFavorite(mFileName);
 
         if (isFavorite) {
+            mFab.setImageResource(R.drawable.ic_action_favorite);
             int color = Color.parseColor("#b20000");
             mFab.setColorFilter(color);
         } else {
+            mFab.setImageResource(R.drawable.ic_action_add_favorite);
             int color = Color.parseColor("#ffffff");
             mFab.setColorFilter(color);
         }
