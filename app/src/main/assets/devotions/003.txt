@@ -1,0 +1,7 @@
+﻿<html>
+
+<h1>A Simple Message</h1>
+
+<aside>As the Father hath loved me, so have I loved you: continue ye in my love.<br />&mdash;John 15:9</aside><p>The great Swiss theologian, Dr. Karl Barth, was probably in his generation the greatest theologian in the world, and a great philosopher as well. I did not always agree with him, but he was my friend and I respected him. While he was in this country, a student at one of the seminaries said, &#8220;Dr. Barth, what is the greatest truth that ever crossed your mind?&#8221; All the seminary students were sitting on the edge of their seats to hear some great, profound, deep, complicated answer. Dr. Barth slowly raised his great shaggy gray head and looked at the student and said, &#8220;Jesus loves me, this I know, for the Bible tells me so.&#8221;</p>
+
+</html>

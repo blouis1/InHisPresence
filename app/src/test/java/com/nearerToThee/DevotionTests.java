@@ -1,6 +1,6 @@
-package com.nearerToThee;
+package com.inHisPresence;
 
-import com.nearerToThee.model.Devotion;
+import com.inHisPresence.model.Devotion;
 
 import org.junit.Test;
 

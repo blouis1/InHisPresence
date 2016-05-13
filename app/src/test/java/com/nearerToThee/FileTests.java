@@ -1,6 +1,6 @@
-package com.nearerToThee;
+package com.inHisPresence;
 
-import com.nearerToThee.model.File;
+import com.inHisPresence.model.File;
 
 import org.junit.Test;
 
